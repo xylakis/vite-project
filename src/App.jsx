@@ -44,10 +44,10 @@ function RecenterButton({ userLocation }) {
 function BottomSheet({ poi, onClose }) {
   if (!poi) return null;
   return (
-    <div
+    <div id = "BOTTOM_SHEET"
       style={{
         position: "absolute",
-        bottom: 40,
+        bottom: 0,
         left: 0,
         right: 0,
         background: "#282525",
@@ -248,7 +248,7 @@ function App() {
 
   return (
     <div style={{ height: "100vh", width: "100vw", position: "relative" }}>
-      
+
       {/* MAP */}
       <MapContainer
         center={userLocation}
