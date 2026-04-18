@@ -115,11 +115,11 @@ function App() {
 
   const icons = {
     location_icon: new L.Icon({
-      iconUrl: "public/icons/icons8-location.png",
+      iconUrl: "/icons/icons8-location.png",
       iconSize: [32, 32],
     }),
     leather: new L.Icon({
-      iconUrl: "public/icons/icons8-leather.png",
+      iconUrl: "/icons/icons8-leather.png",
       iconSize: [32, 32],
     }),
   };
