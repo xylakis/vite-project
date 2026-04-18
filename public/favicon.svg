@@ -2,6 +2,9 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 396 396" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
     <g transform="matrix(1,0,0,1,-76.156523,-11.364039)">
+        <g id="Rectangle-small" serif:id="Rectangle small" transform="matrix(0.894475,0,0,0.769345,28.885666,-3.000033)">
+            <path d="M494.68,95.955L494.68,455.352C494.68,497.857 464.999,532.365 428.44,532.365L119.321,532.365C82.762,532.365 53.081,497.857 53.081,455.352L53.081,95.955C53.081,53.45 82.762,18.941 119.321,18.941L428.44,18.941C464.999,18.941 494.68,53.45 494.68,95.955Z" style="fill:white;stroke:rgb(101,138,99);stroke-opacity:0;stroke-width:0.5px;"/>
+        </g>
         <g transform="matrix(1.048677,0,0,1.048677,-11.564163,-16.25086)">
             <g transform="matrix(1.764838,0,0,1.764838,-1887.51854,-1171.783674)">
                 <circle cx="1223.738" cy="785.708" r="102.732" style="fill:white;fill-opacity:0;stroke:rgb(101,138,99);stroke-width:4.5px;"/>
@@ -24,9 +27,6 @@
             <g transform="matrix(0.89559,0,0,0.89559,26.863587,22.433939)">
                 <path d="M274.054,214.864C292.407,165.512 321.155,122.412 347.908,109.801" style="fill:none;stroke:rgb(101,138,99);stroke-width:8.87px;"/>
             </g>
-        </g>
-        <g id="Rectangle-small" serif:id="Rectangle small" transform="matrix(0.894475,0,0,0.769345,28.885666,-3.000033)">
-            <rect x="53.081" y="18.941" width="441.6" height="513.424" style="fill:white;fill-opacity:0;stroke:rgb(101,138,99);stroke-opacity:0;stroke-width:0.5px;"/>
         </g>
     </g>
 </svg>
