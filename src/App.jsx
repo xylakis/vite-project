@@ -268,7 +268,7 @@ function App() {
           <Marker
             key={poi.id}
             position={poi.position}
-            icon={icons[poi.icon]}
+            icon={selectedPoi?.id === poi.id ? icons.location_icon_active : icons[poi.icon]}
             eventHandlers={{ click: () => setSelectedPoi(poi) }}
           />
         ))}
