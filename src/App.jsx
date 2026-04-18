@@ -228,6 +228,20 @@ function App() {
       position: [35.51606, 24.03855],
       icon: "location_icon",
     },
+    {
+      id: 15,
+      name: "Κατσαμπάς",
+      description: "Οικία Γεωργιουδάκη",
+      position: [35.51516, 24.03793],
+      icon: "location_icon",
+    },
+    {
+      id: 16,
+      name: "Ιερός Ναός Αγίας Μαρίας Μαγδαληνής",
+      description: "",
+      position: [35.5175, 24.03818],
+      icon: "location_icon",
+    },
   ];
 
   if (!userLocation)
