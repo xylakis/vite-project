@@ -116,7 +116,11 @@ function App() {
 
   const icons = {
     location_icon: new L.Icon({
-      iconUrl: "/icons/icons8-location.png",
+      iconUrl: "/icons/my_icon_location_false.png",
+      iconSize: [32, 32],
+    }),
+    location_icon_active: new L.Icon({
+      iconUrl: "/icons/my_icon_location_true.png",
       iconSize: [32, 32],
     }),
     leather: new L.Icon({
@@ -244,22 +248,7 @@ function App() {
 
   return (
     <div style={{ height: "100vh", width: "100vw", position: "relative" }}>
-      {/* TOP BAR 
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0,
-        height: '52px',
-        background: 'white',
-        borderBottom: '1px solid #eee',
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '20px',
-        zIndex: 1000,
-      }}>
-        <span style={{ fontSize: '16px', fontWeight: '600' }}>Chania Trails</span>
-      </div>
-      */}
-
+      
       {/* MAP */}
       <MapContainer
         center={userLocation}
