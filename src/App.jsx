@@ -72,7 +72,8 @@ function BottomSheet({ poi, onClose }) {
       <img src={`/photos/${poi.id}.jpg`} 
       alt={poi.name} style={{ 
         width: "calc(100% + 20px)", 
-        height: "120px", 
+        aspectRatio: "3/1",
+        height: "auto", 
         objectFit: "cover", 
         borderRadius: "5px 5px 5px 5px",
         marginLeft:"-10px",
