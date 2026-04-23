@@ -72,7 +72,7 @@ function BottomSheet({ poi, onClose }) {
       <img src={`/photos/${poi.id}.jpg`} 
       alt={poi.name} style={{ 
         width: "calc(100% + 20px)", 
-        aspectRatio: "3/1",
+        aspectRatio: "2/1",
         height: "auto", 
         objectFit: "cover", 
         borderRadius: "5px 5px 5px 5px",
@@ -256,7 +256,7 @@ function App() {
     {
       id: 14,
       name: "Οικία της οδού Δαγκλή",
-      description: "",
+      description: "Η Φλωρεντίνη Σκουλούδη-Καλούτση (1890-1971) ήταν πρωτοπόρος Ελληνίδα ζωγράφος και χειροτέχνης, που εγκαταστάθηκε στα Χανιά το 1911 και άνοιξε εργαστήριο, συνδυάζοντας μινωικά και κρητικά λαϊκά μοτίβα σε υφαντά. Ίδρυσε την επιτυχημένη οικοτεχνία «Διπλούς Πέλεκυς», αναδεικνύοντας την πολιτιστική κληρονομιά της Κρήτης, ενώ έργα της τιμήθηκαν στην Δημοτική Πινακοθήκη Χανίων. ",
       position: [35.51606, 24.03855],
       icon: "location_icon",
       image_source: " ",
