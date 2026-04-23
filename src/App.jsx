@@ -75,9 +75,8 @@ function BottomSheet({ poi, onClose }) {
         height: "120px", 
         objectFit: "cover", 
         borderRadius: "5px 5px 5px 5px",
-        // marginBottom: "16px" 
         marginLeft:"-10px",
-        marginBottom: "15px",
+        marginBottom: "5px",
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>
         {poi.name}
