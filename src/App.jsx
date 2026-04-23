@@ -55,7 +55,7 @@ function BottomSheet({ poi, onClose }) {
         right: 10,
         background: "#282525",
         borderRadius: "10px 10px 0 0",
-        padding: "7px 16px 32px",
+        padding: "7px 16px 7px",
         zIndex: 1000,
         boxShadow: "0 -2px 12px rgba(0,0,0,0.1)",
       }}
