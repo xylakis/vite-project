@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
+import pois from "./pois";
 
 // --- RECENTER COMPONENT ---
 function RecenterButton({ mapRef,userLocation }) {
