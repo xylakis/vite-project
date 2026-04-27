@@ -54,7 +54,7 @@ function BottomSheet({ poi, onClose }) {
         bottom: 0,
         left: 10,
         right: 10,
-        height: expanded ? window.innerHeight/2 : window.innerHeight/3,
+        height: expanded ? window.innerHeight/2 : '350px',
         background: "#282525",
         borderRadius: "10px 10px 0 0",
         padding: "7px 16px 7px",
