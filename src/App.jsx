@@ -45,6 +45,7 @@ function RecenterButton({ mapRef,userLocation }) {
 
 // --- BOTTOM SHEET ---
 function BottomSheet({ poi, onClose }) {
+  const [expanded, setExpanded] = useState(false);
   if (!poi) return null;
   return (
     <div id = "BOTTOM_SHEET"
@@ -53,7 +54,7 @@ function BottomSheet({ poi, onClose }) {
         bottom: 0,
         left: 10,
         right: 10,
-        height: "350px",
+        height: expanded ? window.innerHeight/2 : window.innerHeight/3,
         background: "#282525",
         borderRadius: "10px 10px 0 0",
         padding: "7px 16px 7px",
@@ -80,7 +81,8 @@ function BottomSheet({ poi, onClose }) {
           color: "#666",
           marginBottom: "16px",
           lineHeight: "1.5",
-          maxHeight: "80px",       // ← cap the height
+          maxHeight: expanded ? "200px" : "80px", // ← expand height when "more" is clicked
+          //maxHeight: "80px",       // ← cap the height
           overflowY: "auto",        // ← scroll when content overflows
           paddingRight: "6px",      // ← prevent text from sitting under the scrollbar
           paddingLeft: "6px",       // ← add some padding for better readability
@@ -104,8 +106,9 @@ function BottomSheet({ poi, onClose }) {
       >
         Close
       </button>
-      <button         
-      style={{
+      <button
+        onClick={() => setExpanded((prev) => !prev)}
+        style={{
           fontSize: "15px",
           color: "#666",
           background: "#eaf4fb",
@@ -115,7 +118,7 @@ function BottomSheet({ poi, onClose }) {
           cursor: "pointer",
           marginRight: "10px",
         }}>
-        more
+        {expanded ? "less" : "more"}
       </button>
     </div>
   );
