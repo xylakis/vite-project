@@ -14,7 +14,7 @@ function RecenterButton({ mapRef,userLocation }) {
       onClick={handleRecenter}
       style={{
         position: "absolute",
-        top: "80px", // always above the sheet
+        bottom: window.innerHeight-60, // always above the sheet
         left: "16px",
         width: "44px",
         height: "44px",
@@ -43,6 +43,102 @@ function RecenterButton({ mapRef,userLocation }) {
     </button>
   );
 }
+
+function WelcomeScreen() {
+  const [show, setShow] = useState(true);
+  if (!show) return null;
+  return (
+    <div style={{
+      position: "absolute",
+      top: "20px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      background: "#282525",
+      color: "white",
+      padding: "10px 20px",
+      borderRadius: "8px",
+      zIndex: 1000,
+      fontSize: "16px",
+      boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
+    }}>
+      
+      Hi! We are <strong>Cultural Memory Coop</strong>. We are a cooperative working with cultural memory and heritage projects around Crete. 
+      <br /><br />
+      <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" style={{ width: "100px", marginBottom: "10px", display: "block", margin: "0 auto" }} />
+      <br />
+      This web application is a prototype for a mobile guide to the historical area of Halepa in the city of Chania.
+      Explore the city by tapping on the points of interest.
+      <br /><br />
+      Please follow our page for updates on this and other projects: <a href="https://culturalmemory.gr/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr</a>
+      <br /><br />
+      You can support what we do at: <a href="https://culturalmemory.gr/giving/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr/giving/</a>
+      <button onClick={() => setShow(false)} style={{
+        marginLeft: "12px",
+        background: "transparent",
+        border: "none",
+        color: "#aaa",
+        fontSize: "14px",
+        cursor: "pointer",
+      }}>Dismiss</button> 
+    </div>
+
+  
+  );
+}
+
+// --- SIDE SHEET (desktop) ---
+function SideSheet({ poi, onClose }) {
+  if (!poi) return null;
+  return (
+    <div style={{
+      position: "absolute",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: "350px",
+      background: "#282525",
+      borderRadius: "10px",
+      padding: "7px 16px 7px",
+      zIndex: 1000,
+      boxShadow: "-2px 0 12px rgba(0,0,0,0.1)",
+      display: "flex",
+      flexDirection: "column",
+    }}>
+      <img src={`/photos/${poi.id}.jpg`}
+        alt={poi.name} style={{
+          width: "calc(100% + 32px)",
+          aspectRatio: "2/1",
+          height: "auto",
+          objectFit: "cover",
+          borderRadius: "5px 5px 5px 5px",
+          marginLeft: "-16px",
+          marginBottom: "5px",
+          flexShrink: 0,
+        }} />
+      <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px", color: "white" }}>
+        {poi.name}
+      </h2>
+      <p style={{
+        fontSize: "15px",
+        color: "#666",
+        marginBottom: "16px",
+        lineHeight: "1.5",
+        overflowY: "auto",
+        paddingRight: "6px",
+        paddingLeft: "6px",
+        flex: 1,
+        minHeight: 0,
+      }}>
+        {poi.description} <br />
+        <i>{poi.image_source}</i>
+      </p>
+      <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
+        <button onClick={onClose} style={btnStyle}>Close</button>
+      </div>
+    </div>
+  );
+}
+
 
 // --- BOTTOM SHEET ---
 function BottomSheet({ poi, onClose }) {
@@ -85,8 +181,6 @@ function BottomSheet({ poi, onClose }) {
           color: "#666",
           marginBottom: "16px",
           lineHeight: "1.5",
-          // maxHeight: expanded ? "200px" : "80px", // ← expand height when "more" is clicked
-          //maxHeight: "80px",       // ← cap the height
           overflowY: "auto",        // ← scroll when content overflows
           paddingRight: "6px",      // ← prevent text from sitting under the scrollbar
           paddingLeft: "6px", 
@@ -98,10 +192,13 @@ function BottomSheet({ poi, onClose }) {
         <i>{poi.image_source}</i>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
+      
       <button onClick={onClose} style={btnStyle}> Close </button>
+      
       <button onClick={() => setExpanded((prev) => !prev)}style={btnStyle}>
         {expanded ? "Less" : "More"}
       </button>
+      
       </div>
     </div>
   );
@@ -167,15 +264,15 @@ function App() {
     );
 
   return (
-    <div style={{ height: "100vh", width: "100vw", position: "relative", 
-    overflow: "hidden" 
+    <div style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" 
     }}
     >
 
       {/* MAP */}
       <MapContainer
         ref = {mapRef}
-        center={userLocation}
+        // center={userLocation}
+        center={[35.517918, 24.038808]}
         zoom={16}
         style={{ height: "100%", width: "100%", 
           paddingTop: "52px", // ← add padding to prevent overlap with recenter button
@@ -202,10 +299,19 @@ function App() {
         
       </MapContainer>
 
+      <WelcomeScreen />
+
       <RecenterButton mapRef={mapRef} userLocation={userLocation} />
 
       {/* BOTTOM SHEET */}
-      <BottomSheet poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
+      {window.innerWidth < 768 && (
+      <BottomSheet poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
+
+      {/* SIDE SHEET - desktop only */}
+      {window.innerWidth >= 768 && (
+        <SideSheet poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
+      )}
+
     </div>
   );
 }
