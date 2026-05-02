@@ -44,6 +44,7 @@ function RecenterButton({ mapRef,userLocation }) {
   );
 }
 
+// --- WELCOME SCREEN ---
 function WelcomeScreen() {
   const [show, setShow] = useState(true);
   if (!show) return null;
@@ -52,6 +53,8 @@ function WelcomeScreen() {
       position: "absolute",
       top: "20px",
       left: "50%",
+      width: "75%",
+      height: "90%",
       transform: "translateX(-50%)",
       background: "#282525",
       color: "white",
@@ -72,14 +75,18 @@ function WelcomeScreen() {
       Please follow our page for updates on this and other projects: <a href="https://culturalmemory.gr/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr</a>
       <br /><br />
       You can support what we do at: <a href="https://culturalmemory.gr/giving/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr/giving/</a>
-      <button onClick={() => setShow(false)} style={{
-        marginLeft: "12px",
-        background: "transparent",
-        border: "none",
-        color: "#aaa",
-        fontSize: "14px",
-        cursor: "pointer",
-      }}>Dismiss</button> 
+      <br /><br />
+      <button onClick={() => setShow(false)} style={
+      //   {
+      //   marginLeft: "12px",
+      //   background: "transparent",
+      //   border: "1px solid #555",
+      //   color: "#fbfbfb",
+      //   fontSize: "16px",
+      //   cursor: "pointer",
+      // }
+      btnStyle
+      }>Dismiss</button> 
     </div>
 
   
@@ -299,9 +306,9 @@ function App() {
         
       </MapContainer>
 
-      <WelcomeScreen />
-
       <RecenterButton mapRef={mapRef} userLocation={userLocation} />
+
+      <WelcomeScreen />
 
       {/* BOTTOM SHEET */}
       {window.innerWidth < 768 && (
