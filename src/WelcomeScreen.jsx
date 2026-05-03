@@ -43,17 +43,7 @@ function WelcomeScreen() {
       <br /><br />
       You can support what we do at: <a href="https://culturalmemory.gr/giving/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr/giving/</a>
       <br /><br />
-      <button onClick={() => setShow(false)} style={
-      //   {
-      //   marginLeft: "12px",
-      //   background: "transparent",
-      //   border: "1px solid #555",
-      //   color: "#fbfbfb",
-      //   fontSize: "16px",
-      //   cursor: "pointer",
-      // }
-      btnStyle
-      }>Dismiss</button> 
+      <button onClick={() => setShow(false)} style={btnStyle}>Dismiss</button> 
     </div>
 
   

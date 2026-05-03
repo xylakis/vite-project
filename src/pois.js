@@ -2,6 +2,7 @@ const pois = [
     {
       id: 1,
       name: "Τα Ταμπακαριά της Χαλέπας",
+      name_eng: "The Tanning Houses of Halepa",
       description: "Τα Ταμπακαριά της Χαλέπας μαζί με αυτά της Αγίας Κυριακής συναποτελούσαν τη σημαντικότερη βιομηχανική(για τα δεδομένα της Κρήτης) περιοχή των Χανίων και ίσως της Κρήτης, από τα μέσα του 19ου αιώνα έως και τη δεκαετία του 1970. Σήμερα, το τελευταίο εν λειτουργία βυρσοδεψείο του Χρήστου Φιλοΐτη στέκεται ακόμα σε πείσμα της των καιρών του αστικού εξευγενισμού και της παγκοσμιοποιημένης οικονομίας.  ",
       description_eng: "The Tabakaria of Halepa, together with those of Agia Kyriaki, formed the most important industrial area (by Cretan standards) of Chania and perhaps of Crete, from the mid-19th century until the 1970s. Today, the last operating tannery of Christos Filoitis still stands, defying the times of urban gentrification and the globalized economy.",
       position: [35.51982, 24.03845],
@@ -11,7 +12,8 @@ const pois = [
     },
     {
       id: 2,
-      name: "Ελληνικό Προξενείο",
+      name: "Το Ελληνικό Προξενείο",
+      name_eng: "The Greek Consulate",
       description: "Στο σημείο αυτό, εκτός από την υπέροχη θέα προς το κέντρο της πόλης, μπορούμε να παρατηρήσουμε το Ελληνικό, το Βρετανικό και το Γερμανικό Προξενείο και η αφήγηση μας πυκνώνει για την ιστορία της Χαλέπας,  ως τόπος φιλοξενίας της διπλωματίας του ύστερου 19ου αιώνα. Ένα από τα πιο ιστορικά κτήρια της Χαλέπας, κτίσθηκε από τον βαμβακέμπορο Χορτάτζη τον 19ο αιώνα. ",
       description_eng: "From this spot, beyond the magnificent view toward the city center, one can observe the Greek, British, and German Consulates. The narrative thickens here around the history of Halepa as a hub of late 19th-century diplomacy. One of the most historic buildings in Halepa, it was built by the cotton merchant Hortatzis in the 19th century.",
       position: [35.51823571635969, 24.03572036417894],
@@ -21,7 +23,8 @@ const pois = [
     },
     {
       id: 3,
-      name: "Πρώην Γαλλική Σχολή",
+      name: "H Πρώην Γαλλική Σχολή",
+      name_eng: "The Former French School",
       description: "Το υπέροχο και εκτεταμένο κτίριο της Γαλλικής σχολής, το οποίο έχει βιώσει αλλεπάλληλες αλλαγές χρήσεις, από ιδιωτική κατοικία Αιγύπτιου εμπόρου μέχρι την στέγαση  τη γαλλικής σχολής και της αρχιτεκτονικής σχολής του Πολυτεχνείου Κρήτης. ",
       description_eng: "The magnificent and expansive building of the French School has undergone successive changes of use, from the private residence of an Egyptian merchant to housing the French school and later the School of Architecture of the Technical University of Crete.",
       position: [35.51860, 24.03783],
@@ -31,7 +34,8 @@ const pois = [
     },
     {
       id: 4,
-      name: "Σπίτι Ελευθερίου Βενιζέλου",
+      name: "To Σπίτι του Ελευθερίου Βενιζέλου",
+      name_eng: "The House of Eleftherios Venizelos",
       description: "Το σπίτι του Ελευθερίου Βενιζέλου, το οποίο σήμερα στεγάζει το Μουσείο Ελευθερίου Βενιζέλου, αποτελεί ένα από τα σημαντικότερα κτίρια της Χαλέπας και ένα από τα πιο σημαντικά ιστορικά κτίρια των Χανίων. Το σπίτι αυτό, το οποίο χτίστηκε στα τέλη του 19ου αιώνα, ήταν η κατοικία του Ελευθερίου Βενιζέλου, ενός από τους πιο σημαντικούς πολιτικούς της Ελλάδας και πρωθυπουργού της χώρας σε διάφορες περιόδους. Το σπίτι αυτό αποτελεί ένα σημαντικό μνημείο της ιστορίας της Ελλάδας και της Χαλέπας και είναι ένας δημοφιλής προορισμός για τους επισκέπτες που ενδιαφέρονται για την ιστορία και την πολιτική της χώρας.",
       description_eng: "The house of Eleftherios Venizelos, which today houses the Eleftherios Venizelos Museum, is one of the most important buildings in Halepa and one of the most significant historic buildings in Chania. Built in the late 19th century, it was the residence of Eleftherios Venizelos, one of Greece's most prominent politicians and prime minister during various periods. It is a significant monument of Greek and Halepa history and a popular destination for visitors interested in the country's history and politics.",
       position: [35.51835, 24.03869],
