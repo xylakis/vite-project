@@ -99,10 +99,11 @@ function SideSheet({ poi, onClose }) {
   return (
     <div style={{
       position: "absolute",
-      top: 0,
-      right: 0,
+      top: "1%",
+      right: "0.8%",
       bottom: 0,
       width: "350px",
+      height: "95%",
       background: "#282525",
       borderRadius: "10px",
       padding: "7px 16px 7px",
