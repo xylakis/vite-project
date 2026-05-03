@@ -65,7 +65,7 @@ function WelcomeScreen() {
       boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
     }}>
       
-      Hi! We are <strong>Cultural Memory Coop</strong>. We are a cooperative working with cultural memory and heritage projects around Crete. 
+      Hi. We are <strong>Cultural Memory Coop</strong>. We are a cooperative working with cultural memory and heritage projects around Crete. 
       <br /><br />
       <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" style={{ width: "100px", marginBottom: "10px", display: "block", margin: "0 auto" }} />
       <br />
