@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import pois from "./pois";
 
+import WelcomeScreen from "./WelcomeScreen";
+
 // --- RECENTER COMPONENT ---
 function RecenterButton({ mapRef,userLocation }) {
   // const map = useMap();
@@ -76,7 +78,17 @@ function WelcomeScreen() {
       <br /><br />
       You can support what we do at: <a href="https://culturalmemory.gr/giving/" target="_blank" style={{ color: "#4ea8de" }}>culturalmemory.gr/giving/</a>
       <br /><br />
-      <button onClick={() => setShow(false)} style={btnStyle}>Dismiss</button> 
+      <button onClick={() => setShow(false)} style={
+      //   {
+      //   marginLeft: "12px",
+      //   background: "transparent",
+      //   border: "1px solid #555",
+      //   color: "#fbfbfb",
+      //   fontSize: "16px",
+      //   cursor: "pointer",
+      // }
+      btnStyle
+      }>Dismiss</button> 
     </div>
 
   
@@ -85,6 +97,9 @@ function WelcomeScreen() {
 
 // --- SIDE SHEET (desktop) ---
 function SideSheet({ poi, onClose }) {
+
+  const [showEng, setShowEng] = useState(false);
+
   if (!poi) return null;
   return (
     <div style={{
@@ -127,18 +142,24 @@ function SideSheet({ poi, onClose }) {
         flex: 1,
         minHeight: 0,
       }}>
-        {poi.description} <br />
+        {showEng ? poi.description_eng : poi.description} <br />
         <i>{poi.image_source}</i>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
-        <button onClick={onClose} style={btnStyle}>Close</button>
+        <button onClick={onClose} style={btnStyle}>Close</button> 
+         <button onClick={() => setShowEng(prev => !prev)} style={btnStyle}>
+          {showEng ? "Ελληνικά" : "English"}
+        </button> 
+
+
+
       </div>
     </div>
   );
 }
 
 
-// --- BOTTOM SHEET ---
+// --- BOTTOM SHEET (mobile) ---
 function BottomSheet({ poi, onClose }) {
   const [expanded, setExpanded] = useState(false);
   if (!poi) return null;
