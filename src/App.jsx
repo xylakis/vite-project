@@ -205,7 +205,7 @@ function App() {
   const icons = {
     location_icon: new L.Icon({
       iconUrl: "/icons/my_icon_location_false.png",
-      iconSize: [32, 32],
+      iconSize: [28, 28],
     }),
     location_icon_active: new L.Icon({
       iconUrl: "/icons/my_icon_location_true.png",
@@ -215,6 +215,10 @@ function App() {
       iconUrl: "/icons/icons8-leather.png",
       iconSize: [32, 32],
     }),
+    selected: new L.Icon({
+      iconUrl: "/icons/my_selected_poi.png",
+      iconSize:[32, 32],
+    })
   };
 
   if (!userLocation)
@@ -258,14 +262,42 @@ function App() {
         </Marker>
 
         {/* POI MARKERS */}
-        {pois.map((poi) => (
+        {/* {pois.map((poi) => (
           <Marker
             key={poi.id}
             position={poi.position}
             icon={selectedPoi?.id === poi.id ? icons.location_icon_active : icons[poi.icon]}
             eventHandlers={{ click: () => setSelectedPoi(poi) }}
           />
+        ))} */}
+
+        {/* SELECTION RING — rendered on top of the selected POI */}
+        {selectedPoi && (
+          <Marker
+            key={`${selectedPoi.id}-selected`}
+            position={selectedPoi.position}
+            icon={icons.selected}
+            interactive={false}
+            keyboard={false}
+            zIndexOffset={-1000}    // negative pushes it down
+          />
+        )}
+
+        {/* POI MARKERS */}
+        {pois.map((poi) => (
+          <Marker
+            key={poi.id}
+            position={poi.position}
+            icon={icons[poi.icon]}
+            eventHandlers={{ click: () => setSelectedPoi(poi) }}
+          />
         ))}
+
+        
+
+
+
+
         
       </MapContainer>
 
