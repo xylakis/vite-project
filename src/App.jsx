@@ -80,7 +80,8 @@ function SideSheet({ poi, onClose }) {
           flexShrink: 0,
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px", color: "white" }}>
-        {poi.name}
+        {/* {poi.name} */}
+        {showEng ? poi.name_eng : poi.name}
       </h2>
       <p style={{
         fontSize: "15px",
