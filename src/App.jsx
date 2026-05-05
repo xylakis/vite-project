@@ -113,7 +113,10 @@ function SideSheet({ poi, onClose }) {
 
 // --- BOTTOM SHEET (mobile) ---
 function BottomSheet({ poi, onClose }) {
+  
   const [expanded, setExpanded] = useState(false);
+  const [showEng, setShowEng] = useState(false);
+  
   if (!poi) return null;
   return (
     <div id = "BOTTOM_SHEET"
@@ -144,7 +147,7 @@ function BottomSheet({ poi, onClose }) {
         flexShrink: 0,  // ← prevent image from shrinking
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>
-        {poi.name}
+        {showEng ? poi.name_eng : poi.name}
       </h2>
       <p
         style={{
@@ -159,7 +162,7 @@ function BottomSheet({ poi, onClose }) {
           minHeight: 0,     // ← required for overflow to work inside flex
         }}
       >
-        {poi.description} <br />
+        {showEng ? poi.description_eng : poi.description}<br />
         <i>{poi.image_source}</i>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
@@ -169,6 +172,10 @@ function BottomSheet({ poi, onClose }) {
       <button onClick={() => setExpanded((prev) => !prev)}style={btnStyle}>
         {expanded ? "Less" : "More"}
       </button>
+
+      <button onClick={() => setShowEng(prev => !prev)} style={btnStyle}>
+          {showEng ? "Ελληνικά" : "English"}
+        </button> 
       
       </div>
     </div>
