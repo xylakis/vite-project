@@ -5,9 +5,6 @@ import { welcomeDivStyle } from "../myStyles";
 
 function SideSheet({ poi, onClose, showEng, setShowEng }) {
 
-  // const [showEng, setShowEng] = useState(false);
-  showEng = {showEng};
-
   if (!poi) return null;
   return (
     <div style={{
@@ -52,7 +49,9 @@ function SideSheet({ poi, onClose, showEng, setShowEng }) {
         minHeight: 0,
       }}>
         {showEng ? poi.description_eng : poi.description} <br />
-        <i>{poi.image_source}</i>
+        {/* <i>{poi.image_source}</i> */}
+        image source:
+        <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}> {poi.image_source}</a>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
         <button onClick={onClose} style={btnStyle}>Close</button> 

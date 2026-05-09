@@ -116,11 +116,11 @@ function App() {
 
       {/* BOTTOM SHEET */}
       {window.innerWidth < 768 && (
-      <BottomSheet poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
+      <BottomSheet showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
 
       {/* SIDE SHEET - desktop only */}
       {window.innerWidth >= 768 && (
-        <SideSheet poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
+        <SideSheet showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
       )}
 
     </div>

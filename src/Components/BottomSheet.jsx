@@ -7,7 +7,6 @@ import { welcomeDivStyle } from "../myStyles";
 function BottomSheet({ poi, onClose, showEng, setShowEng }) {
   
   const [expanded, setExpanded] = useState(false);
-  // const [showEng, setShowEng] = useState(false);
   
   if (!poi) return null;
   return (
@@ -55,7 +54,8 @@ function BottomSheet({ poi, onClose, showEng, setShowEng }) {
         }}
       >
         {showEng ? poi.description_eng : poi.description}<br />
-        <i>{poi.image_source}</i>
+        {/* <i>{poi.image_source}</i> */}
+        <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}>image source: {poi.image_source}</a>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
       
