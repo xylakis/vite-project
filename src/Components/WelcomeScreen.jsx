@@ -1,18 +1,10 @@
 import { useState } from "react";
-import btnStyle from "./myStyles";
-import { welcomeDivStyle } from "./myStyles";
-
-
-
-
+import btnStyle from "../myStyles";
+import { welcomeDivStyle } from "../myStyles";
 
 // --- WELCOME SCREEN ---
 function WelcomeScreen({ showEng, setShowEng }) {
   const [show, setShow] = useState(true);
-  // const [showEng, setShowEng] = useState(true);
-  // showEng = {showEng};
-  // setShowEng={setShowEng}
-
 
   const welcomeDivEng = <div id = 'WelcomeScreenEnglish' style={welcomeDivStyle}>
       Hi! We are <strong>Cultural Memory Coop</strong>. We are a cooperative working with cultural memory and heritage projects around Crete. 
