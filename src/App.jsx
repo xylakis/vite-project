@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import pois from "./pois";
+import btnStyle from "./myStyles";
 
 import WelcomeScreen from "./WelcomeScreen";
 
@@ -47,9 +48,10 @@ function RecenterButton({ mapRef,userLocation }) {
 }
 
 // --- SIDE SHEET (desktop) ---
-function SideSheet({ poi, onClose }) {
+function SideSheet({ poi, onClose, showEng, setShowEng }) {
 
-  const [showEng, setShowEng] = useState(false);
+  // const [showEng, setShowEng] = useState(false);
+  showEng = {showEng};
 
   if (!poi) return null;
   return (
@@ -112,10 +114,10 @@ function SideSheet({ poi, onClose }) {
 
 
 // --- BOTTOM SHEET (mobile) ---
-function BottomSheet({ poi, onClose }) {
+function BottomSheet({ poi, onClose, showEng, setShowEng }) {
   
   const [expanded, setExpanded] = useState(false);
-  const [showEng, setShowEng] = useState(false);
+  // const [showEng, setShowEng] = useState(false);
   
   if (!poi) return null;
   return (
@@ -182,19 +184,10 @@ function BottomSheet({ poi, onClose }) {
   );
 }
 
-const btnStyle = {
-  fontSize: "15px",
-  color: "#666",
-  background: "#eaf4fb",
-  border: "none",
-  borderRadius: "8px",
-  padding: "8px 14px",
-  cursor: "pointer",
-};
-
 function App() {
   const [userLocation, setUserLocation] = useState(null);
   const [selectedPoi, setSelectedPoi] = useState(null);
+  const [showEng, setShowEng] = useState(true);
 
   const mapRef = useRef(null);
 
@@ -311,7 +304,7 @@ function App() {
 
       <RecenterButton mapRef={mapRef} userLocation={userLocation} />
 
-      <WelcomeScreen />
+      <WelcomeScreen showEng={showEng} setShowEng={setShowEng}/>
 
       {/* BOTTOM SHEET */}
       {window.innerWidth < 768 && (
