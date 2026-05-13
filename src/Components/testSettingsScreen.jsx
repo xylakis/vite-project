@@ -128,7 +128,17 @@ export default function TestSettingsScreen({ onClose }) {
                     <span style={{ fontSize: '12px', opacity: 0.5 }}>↗</span>
                 </button>
             </div>
-
+        <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" style={{ position:'absolute', bottom: '70px', left: '50%', transform: 'translateX(-50%)', width: "100px", marginBottom: "0px", margin: "0 auto" }} />
+        <p style={{
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    textAlign: 'center',
+    padding: '8px',
+    fontSize: '12px',
+    color: 'var(--text-primary)',
+    opacity: 0.5,}}> © 2026 Cultural Memory. All rights reserved.</p>
         </div>
     );
 }

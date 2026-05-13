@@ -145,12 +145,14 @@ code {
 #SettingsScreen{
   position: absolute;
   top: 1%;
-  left: 22%;
-  width: 30%;
+  left: 33%;
+  width: 50%;
   height: 95%;
   transform: translateX(-50%);
-  background: #282525;
-  color: white;
+  /* background: #282525;
+  color: white; */
+  background: var(--bg-surface);
+  color: var(--text-primary);
   padding: 10px 20px;
   border-radius: 8px;
   z-index: 1000;
