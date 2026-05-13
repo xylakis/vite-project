@@ -7,12 +7,14 @@ import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
-import RecenterButton from "./Components/RecenterButton";
+import SettingsScreen from "./Components/SettingsScreen";
+import RecenterButton, {SettingsButton} from "./Components/myButtons";
 
 function App() {
   const [userLocation, setUserLocation] = useState(null);
   const [selectedPoi, setSelectedPoi] = useState(null);
   const [showEng, setShowEng] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
 
   const mapRef = useRef(null);
 
@@ -103,16 +105,21 @@ function App() {
         ))}
 
         
-
-
-
-
-        
       </MapContainer>
 
       <RecenterButton mapRef={mapRef} userLocation={userLocation} />
+      
+      <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
+      
+      {showSettings && (
+        <SettingsScreen
+          onClose={() => setShowSettings(false)}
+        />
+      )}
 
       <WelcomeScreen showEng={showEng} setShowEng={setShowEng}/>
+
+
 
       {/* BOTTOM SHEET */}
       {window.innerWidth < 768 && (

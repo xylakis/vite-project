@@ -8,7 +8,8 @@ const pois = [
       position: [35.51982, 24.03845],
       icon: "location_icon",
       className: "area",
-      image_source: "https://www.chania-heritage.gr/"
+      image_source: "https://www.chania-heritage.gr/",
+      text_source:"",
     },
     {
       id: 2,

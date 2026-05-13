@@ -9,10 +9,10 @@ const btnStyle = {
 };
 
 const welcomeDivStyle = {position: "absolute",
-      top: "20px",
+      top: "1%",
       left: "50%",
-      width: "75%",
-      height: "90%",
+      width: "85%",
+      height: "95%",
       transform: "translateX(-50%)",
       background: "#282525",
       color: "white",
