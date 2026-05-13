@@ -70,7 +70,7 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  /* color: var(--text-h); */
 }
 
 h1 {
@@ -109,6 +109,54 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+/*side sheet rules*/
+ #SideSheet {
+  position: absolute;
+  top: 1%;
+  right: 0.8%;
+  bottom: 0px;
+  width: 30%;
+  height: 95%;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 7px 16px 7px;
+  z-index: 1000;
+  box-shadow: -2px 0 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+} 
+
+#BOTTOM_SHEET {        
+  position: absolute;
+  bottom: 0;
+  left: 10;
+  right: 10;
+  /* background: #282525; */
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-radius: 10px 10px 0 0;
+  padding: 7px 16px 7px;
+  z-index: 1000;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;}
+
+#SettingsScreen{
+  position: absolute;
+  top: 1%;
+  left: 22%;
+  width: 30%;
+  height: 95%;
+  transform: translateX(-50%);
+  background: #282525;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  font-size: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
 
 /* Map app overrides */
 body {
@@ -117,14 +165,31 @@ body {
   overflow: hidden;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
+/* Default (bright) variables on :root
+:root {
+  --bg-surface: #F5F5F5;
+  --text-primary: #000;
+} */
+
+.mode-bright { 
+    --bg-surface: #F5F5F5; 
+    --text-primary: #000; 
+}
+
+.mode-dark { 
+    --bg-surface: #161616; 
+    --text-primary: #F0F0F0; }
+
 #root {
   width: 100vw;
   max-width: 100vw;
   margin: 0;
   border: none;
   text-align: left;
-}
-
-html, body, #root {
-  height: 100%;
+   /* background: var(--bg-surface); 
+  color: var(--text-primary);  */
 }

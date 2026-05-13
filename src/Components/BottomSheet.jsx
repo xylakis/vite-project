@@ -12,18 +12,18 @@ function BottomSheet({ poi, onClose, showEng, setShowEng }) {
   return (
     <div id = "BOTTOM_SHEET"
       style={{
-        position: "absolute",
-        bottom: 0,
-        left: 10,
-        right: 10,
+        // position: "absolute",
+        // bottom: 0,
+        // left: 10,
+        // right: 10,
         height: expanded ? window.innerHeight/1.2 : window.innerHeight/2,
-        background: "#282525",
-        borderRadius: "10px 10px 0 0",
-        padding: "7px 16px 7px",
-        zIndex: 1000,
-        boxShadow: "0 -2px 12px rgba(0,0,0,0.1)",
-        display: "flex",          // ← add
-        flexDirection: "column",  // ← add
+        // background: "#282525",
+        // borderRadius: "10px 10px 0 0",
+        // padding: "7px 16px 7px",
+        // zIndex: 1000,
+        // boxShadow: "0 -2px 12px rgba(0,0,0,0.1)",
+        // display: "flex",          // ← add
+        // flexDirection: "column",  // ← add
       }}
     >
       <img src={`/photos/${poi.id}.jpg`} 

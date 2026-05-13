@@ -7,21 +7,7 @@ function SideSheet({ poi, onClose, showEng, setShowEng }) {
 
   if (!poi) return null;
   return (
-    <div style={{
-      position: "absolute",
-      top: "1%",
-      right: "0.8%",
-      bottom: 0,
-      width: "350px",
-      height: "95%",
-      background: "#282525",
-      borderRadius: "10px",
-      padding: "7px 16px 7px",
-      zIndex: 1000,
-      boxShadow: "-2px 0 12px rgba(0,0,0,0.1)",
-      display: "flex",
-      flexDirection: "column",
-    }}>
+    <div id = "SideSheet">
       <img src={`/photos/${poi.id}.jpg`}
         alt={poi.name} style={{
           width: "calc(100% + 32px)",
@@ -33,7 +19,7 @@ function SideSheet({ poi, onClose, showEng, setShowEng }) {
           marginBottom: "5px",
           flexShrink: 0,
         }} />
-      <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px", color: "white" }}>
+      <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>
         {/* {poi.name} */}
         {showEng ? poi.name_eng : poi.name}
       </h2>

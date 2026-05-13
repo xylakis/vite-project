@@ -8,6 +8,7 @@ import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import SettingsScreen from "./Components/SettingsScreen";
+import TestSettingsScreen from "./Components/testSettingsScreen";
 import RecenterButton, {SettingsButton} from "./Components/myButtons";
 
 function App() {
@@ -111,11 +112,19 @@ function App() {
       
       <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
       
-      {showSettings && (
+      {/* {showSettings && (
         <SettingsScreen
           onClose={() => setShowSettings(false)}
         />
+      )} */}
+
+      {showSettings && (
+        <TestSettingsScreen
+          onClose={() => setShowSettings(false)}
+        />
       )}
+
+  
 
       <WelcomeScreen showEng={showEng} setShowEng={setShowEng}/>
 
