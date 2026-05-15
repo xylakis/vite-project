@@ -4,28 +4,28 @@ import { welcomeDivStyle } from "../myStyles";
 
 
 // --- BOTTOM SHEET (mobile) ---
-function BottomSheet({ poi, onClose, showEng, setShowEng }) {
+function BottomSheet({ poi, onClose, language }) {
   
   const [expanded, setExpanded] = useState(false);
   
   if (!poi) return null;
+
+    const descriptions = {
+    English: poi.description_eng,
+    Greek:   poi.description,
+    German:  poi.description_ger,
+    French:  poi.description_fra,
+};
+
+  const names ={
+    English: poi.name_eng,
+    Greek:   poi.name,
+    German:  poi.name_ger,
+    French:  poi.name_fra,
+  };
+  
   return (
-    <div id = "BOTTOM_SHEET"
-      style={{
-        // position: "absolute",
-        // bottom: 0,
-        // left: 10,
-        // right: 10,
-        height: expanded ? window.innerHeight/1.2 : window.innerHeight/2,
-        // background: "#282525",
-        // borderRadius: "10px 10px 0 0",
-        // padding: "7px 16px 7px",
-        // zIndex: 1000,
-        // boxShadow: "0 -2px 12px rgba(0,0,0,0.1)",
-        // display: "flex",          // ← add
-        // flexDirection: "column",  // ← add
-      }}
-    >
+    <div id = "BOTTOM_SHEET" style={{height: expanded ? window.innerHeight/1.2 : window.innerHeight/2}}>
       <img src={`/photos/${poi.id}.jpg`} 
       alt={poi.name} style={{ 
         width: "calc(100% + 20px)", 
@@ -38,7 +38,7 @@ function BottomSheet({ poi, onClose, showEng, setShowEng }) {
         flexShrink: 0,  // ← prevent image from shrinking
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>
-        {showEng ? poi.name_eng : poi.name}
+                {names[language] ?? poi.name_eng}
       </h2>
       <p
         style={{
@@ -53,8 +53,8 @@ function BottomSheet({ poi, onClose, showEng, setShowEng }) {
           minHeight: 0,     // ← required for overflow to work inside flex
         }}
       >
-        {showEng ? poi.description_eng : poi.description}<br />
-        {/* <i>{poi.image_source}</i> */}
+        {descriptions[language] ?? poi.description_eng}
+        <br />
         <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}>image source: {poi.image_source}</a>
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
@@ -64,11 +64,6 @@ function BottomSheet({ poi, onClose, showEng, setShowEng }) {
       <button onClick={() => setExpanded((prev) => !prev)}style={btnStyle}>
         {expanded ? "Less" : "More"}
       </button>
-
-      <button onClick={() => setShowEng(prev => !prev)} style={btnStyle}>
-          {showEng ? "Ελληνικά" : "English"}
-        </button> 
-      
       </div>
     </div>
   );

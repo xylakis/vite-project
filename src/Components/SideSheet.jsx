@@ -3,7 +3,7 @@ import btnStyle from "../myStyles";
 import { welcomeDivStyle } from "../myStyles";
 
 
-function SideSheet({ poi, onClose, showEng, setShowEng, language }) {
+function SideSheet({ poi, onClose, language }) {
   
   if (!poi) return null;
   
@@ -13,6 +13,13 @@ function SideSheet({ poi, onClose, showEng, setShowEng, language }) {
     German:  poi.description_ger,
     French:  poi.description_fra,
 };
+
+  const names ={
+    English: poi.name_eng,
+    Greek:   poi.name,
+    German:  poi.name_ger,
+    French:  poi.name_fra,
+  };
 
   
   return (
@@ -50,8 +57,7 @@ function SideSheet({ poi, onClose, showEng, setShowEng, language }) {
           flexShrink: 0,
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>
-        {/* {poi.name} */}
-        {showEng ? poi.name_eng : poi.name}
+        {names[language] ?? poi.name_eng}
       </h2>
       <p style={{
         fontSize: "15px",
@@ -64,10 +70,8 @@ function SideSheet({ poi, onClose, showEng, setShowEng, language }) {
         flex: 1,
         minHeight: 0,
       }}>
-        {/* {showEng ? poi.description_eng : poi.description}  */}
         {descriptions[language] ?? poi.description_eng}
         <br />
-        {/* <i>{poi.image_source}</i> */}
         image source:
         <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}> {poi.image_source}</a>
       </p>

@@ -137,13 +137,13 @@ function App() {
 
 
 
-      {/* BOTTOM SHEET */}
+      {/* BOTTOM SHEET - mobile only*/}
       {window.innerWidth < 768 && (
-      <BottomSheet showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
+      <BottomSheet language={language} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
 
       {/* SIDE SHEET - desktop only */}
       {window.innerWidth >= 768 && (
-        <SideSheet language={language} showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
+      <SideSheet language={language} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
       )}
 
     </div>
