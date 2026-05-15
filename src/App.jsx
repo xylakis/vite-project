@@ -17,6 +17,10 @@ function App() {
   const [showEng, setShowEng] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
+  const [isDark, setIsDark] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const [fontSize, setFontSize] = useState('Default');
+
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -121,6 +125,9 @@ function App() {
       {showSettings && (
         <TestSettingsScreen
           onClose={() => setShowSettings(false)}
+          isDark={isDark}       setIsDark={setIsDark}
+          language={language}   setLanguage={setLanguage}
+          fontSize={fontSize}   setFontSize={setFontSize}
         />
       )}
 
@@ -136,7 +143,7 @@ function App() {
 
       {/* SIDE SHEET - desktop only */}
       {window.innerWidth >= 768 && (
-        <SideSheet showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
+        <SideSheet language={language} showEng={showEng} setShowEng={setShowEng} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
       )}
 
     </div>

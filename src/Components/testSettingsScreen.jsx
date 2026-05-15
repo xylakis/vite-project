@@ -1,9 +1,6 @@
 import { useState } from "react";
 
-export default function TestSettingsScreen({ onClose }) {
-    const [isDark, setIsDark] = useState(false);
-    const [language, setLanguage] = useState('English');
-    const [fontSize, setFontSize] = useState('Default');
+export default function TestSettingsScreen({ onClose, isDark, setIsDark, language, setLanguage, fontSize, setFontSize }) {
 
     const fontSizes = { Small: '13px', Default: '15px', Large: '18px' };
     const languages = [
@@ -130,15 +127,17 @@ export default function TestSettingsScreen({ onClose }) {
             </div>
         <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" style={{ position:'absolute', bottom: '70px', left: '50%', transform: 'translateX(-50%)', width: "100px", marginBottom: "0px", margin: "0 auto" }} />
         <p style={{
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    textAlign: 'center',
-    padding: '8px',
-    fontSize: '12px',
-    color: 'var(--text-primary)',
-    opacity: 0.5,}}> © 2026 Cultural Memory. All rights reserved.</p>
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                textAlign: 'center',
+                padding: '8px',
+                fontSize: '12px',
+                color: 'var(--text-primary)',
+                opacity: 0.5,}}
+        > 
+        © 2026 Cultural Memory. All rights reserved.</p>
         </div>
     );
 }
