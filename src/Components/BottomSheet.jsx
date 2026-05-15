@@ -26,6 +26,27 @@ function BottomSheet({ poi, onClose, language }) {
   
   return (
     <div id = "BOTTOM_SHEET" style={{height: expanded ? window.innerHeight/1.2 : window.innerHeight/2}}>
+            <button
+      onClick={onClose}
+      aria-label="Close"
+      style={{
+        position: 'absolute',
+        top: '16px',
+        right: '16px',
+        background: 'rgba(0,0,0,0.4)',
+        border: '0.5px solid rgba(255,255,255,0.2)',
+        cursor: 'pointer',
+        color: 'rgba(255,255,255,0.85)',
+        width: '28px',
+        height: '28px',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+    <i className="ti ti-x" style={{ fontSize: '14px' }} />
+    </button>
       <img src={`/photos/${poi.id}.jpg`} 
       alt={poi.name} style={{ 
         width: "calc(100% + 20px)", 
@@ -42,7 +63,7 @@ function BottomSheet({ poi, onClose, language }) {
       </h2>
       <p
         style={{
-          fontSize: "15px",
+          fontSize: "var(--font-size-base, 15px)",
           color: "#666",
           marginBottom: "16px",
           lineHeight: "1.5",
@@ -59,7 +80,7 @@ function BottomSheet({ poi, onClose, language }) {
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
       
-      <button onClick={onClose} style={btnStyle}> Close </button>
+      {/* <button onClick={onClose} style={btnStyle}> Close </button> */}
       
       <button onClick={() => setExpanded((prev) => !prev)}style={btnStyle}>
         {expanded ? "Less" : "More"}
