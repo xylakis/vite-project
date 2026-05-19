@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TestSettingsScreen({ onClose, isDark, setIsDark, language, setLanguage, fontSize, setFontSize }) {
+export default function TestSettingsScreen({ onClose, isDark, setIsDark, language, setLanguage, fontSize, setFontSize, showRoute, setShowRoute, routeInfo }) {
 
     const fontSizes = { Small: '13px', Default: '15px', Large: '18px' };
     const languages = [
@@ -99,6 +99,28 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
                             <span style={{ fontSize: '12px' }}>{size}</span>
                         </button>
                     ))}
+                </div>
+            </div>
+
+            {/* Map Layers */}
+            <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border, #333)' }}>
+                <span style={sectionLabel}>Map Layers</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                        🗺️ Halepa Path of Memory {routeInfo?.distance ? `(${(routeInfo.distance / 1000).toFixed(2)} km)` : ''}
+                    </span>
+                    <button onClick={() => setShowRoute(!showRoute)} style={{
+                        width: '44px', height: '24px', borderRadius: '12px',
+                        background: showRoute ? '#4a90d9' : 'var(--border, #555)',
+                        border: 'none', cursor: 'pointer', position: 'relative', transition: 'background 0.2s'
+                    }}>
+                        <span style={{
+                            position: 'absolute', top: '3px',
+                            left: showRoute ? '23px' : '3px',
+                            width: '18px', height: '18px', borderRadius: '50%',
+                            background: 'white', transition: 'left 0.2s'
+                        }} />
+                    </button>
                 </div>
             </div>
 

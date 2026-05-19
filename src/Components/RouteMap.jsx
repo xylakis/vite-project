@@ -21,7 +21,8 @@ export function useOsrmRoute(stops) {
       try {
         const coordString = stops.map((s) => `${s.lng},${s.lat}`).join(";");
         const res = await fetch(
-          `https://router.project-osrm.org/route/v1/driving/${coordString}?overview=full&geometries=geojson`,
+          // `https://router.project-osrm.org/route/v1/foot/${coordString}?overview=full&geometries=geojson`,
+          `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${coordString}?overview=full&geometries=geojson`,
           { signal: controller.signal }
         );
         const data = await res.json();
@@ -65,3 +66,19 @@ export function RouteLayer({ stops }) {
     </>
   );
 }
+// Simplify RouteLayer to just draw what it receives:
+// export function RouteLayer({ routePositions }) {
+//   if (routePositions.length < 2) return null;
+//   return (
+//     <>
+//       <Polyline
+//         positions={routePositions}
+//         pathOptions={{ color: "#1e3a5f", weight: 7, opacity: 0.25 }}
+//       />
+//       <Polyline
+//         positions={routePositions}
+//         pathOptions={{ color: "#3b82f6", weight: 4, opacity: 0.9 }}
+//       />
+//     </>
+//   );
+// }
