@@ -43,7 +43,8 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
         <div id="SettingsScreen" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
 
             {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px 12px', borderBottom: '1px solid var(--border, #333)' }}>
+            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                padding: '16px 20px 12px', borderBottom: '1px solid var(--border, #333)' }}>
                 <h2 style={{ fontSize: '16px', fontWeight: '600', margin: 0, color: 'var(--text-primary)' }}>
                     Settings
                 </h2>
@@ -62,6 +63,9 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
                     ✕
                 </button>
             </div>
+            
+            {/* ── Scrollable body ── */}
+            <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
 
             {/* Appearance */}
             <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border, #333)' }}>
@@ -147,19 +151,33 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
                     <span style={{ fontSize: '12px', opacity: 0.5 }}>↗</span>
                 </button>
             </div>
-        <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" style={{ position:'absolute', bottom: '70px', left: '50%', transform: 'translateX(-50%)', width: "100px", marginBottom: "0px", margin: "0 auto" }} />
-        <p style={{
-                position: 'fixed',
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                textAlign: 'center',
-                padding: '8px',
-                fontSize: '12px',
+            </div>
+            {/* ── END scrollable body ── */}
+
+            {/* ── Sticky footer: logo + copyright ── */}
+            <div style={{
+                flexShrink: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '12px 0 10px',
+                borderTop: '1px solid var(--border, #333)',
+                background: 'var(--bg-panel, inherit)',   // covers scroll content underneath
+            }}>
+
+            <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" 
+            style={{ width: '64px', marginBottom: '6px' }}
+            />
+            <p style={{
+                margin: 0,
+                fontSize: '11px',
                 color: 'var(--text-primary)',
-                opacity: 0.5,}}
-        > 
-        © 2026 Cultural Memory. All rights reserved.</p>
+                opacity: 0.5,
+                textAlign: 'center',
+                }}
+            > 
+            © 2026 Cultural Memory. All rights reserved.</p>
+            </div>
         </div>
     );
 }

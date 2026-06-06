@@ -192,6 +192,4 @@ html, body, #root {
   margin: 0;
   border: none;
   text-align: left;
-   /* background: var(--bg-surface); 
-  color: var(--text-primary);  */
 }

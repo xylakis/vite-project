@@ -17,6 +17,7 @@ function App() {
   const [selectedPoi, setSelectedPoi] = useState(null);
   const [showEng, setShowEng] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const [isDark, setIsDark] = useState(false);
   const [language, setLanguage] = useState('English');
@@ -167,7 +168,28 @@ function App() {
         />
       )}
 
-      <WelcomeScreen showEng={showEng} setShowEng={setShowEng}/>
+      {showWelcome && (
+      <div 
+        style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '90%',
+            maxWidth: '480px',
+            height: '80vh',        // ← fixed height instead of maxHeight
+            zIndex: 1000,
+            borderRadius: '12px',
+            background: 'var(--bg-panel, #F5F5F5)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            overflow: 'hidden',    // keep this — the inner div handles scrolling
+            display: 'flex',       // ← add this
+            flexDirection: 'column', // ← and this, so WelcomeScreen fills the height
+      }}>
+
+      <WelcomeScreen showEng={showEng} setShowEng={setShowEng} onClose={() => setShowWelcome(false)} />
+      </div>
+      )}
 
       {/* BOTTOM SHEET - mobile only*/}
       {window.innerWidth < 768 && (
