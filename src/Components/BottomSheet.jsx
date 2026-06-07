@@ -76,7 +76,8 @@ function BottomSheet({ poi, onClose, language }) {
       >
         {descriptions[language] ?? poi.description_eng}
         <br />
-        <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}>image source: {poi.image_source}</a>
+        {/* <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}>image source: {poi.image_source}</a> */}
+        image source: poi.image_source
       </p>
       <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
       
