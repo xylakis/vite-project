@@ -76,7 +76,7 @@ function SideSheet({ poi, onClose, language }) {
         <br />
         image source:
         {/* <a href={poi.image_source} target="_blank" style={{ color: "#4ea8de" }}> {poi.image_source}</a> */}
-        image source: poi.image_source
+        {poi.image_source}
       </p>
       {/* <div style={{ display: "flex", gap: "10px", flexShrink: 0, paddingBottom: "8px", justifyContent: "center" }}>
 
