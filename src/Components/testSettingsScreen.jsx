@@ -111,7 +111,8 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
                 <span style={sectionLabel}>Map Layers</span>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
-                        🗺️ Halepa Path of Memory {routeInfo?.distance ? `(${(routeInfo.distance / 1000).toFixed(2)} km)` : ''}
+                        {/* 🗺️ Halepa Path of Memory {routeInfo?.distance ? `(${(routeInfo.distance / 1000).toFixed(2)} km)` : ''} */}
+                        🗺️ Halepa Path of Memory {routeInfo?.distance ? `(${routeInfo.distance} km)` : ''}
                     </span>
                     <button onClick={() => setShowRoute(!showRoute)} style={{
                         width: '44px', height: '24px', borderRadius: '12px',

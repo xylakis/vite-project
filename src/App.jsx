@@ -49,6 +49,20 @@ function App() {
 
   const { routePositions, routeInfo, status } = useOsrmRoute(routeStops);
 
+  const startFlagIcon = L.icon({
+  iconUrl: '/icons/icons8-flag-100 (green).png',
+  iconSize: [25, 25],
+  iconAnchor: [15, 15],   // tip of the flagpole
+  popupAnchor: [0, -20],
+});
+
+const finishFlagIcon = L.icon({
+  iconUrl: '/icons/icons8-flag-100 (red).png',
+  iconSize: [25, 25],
+  iconAnchor: [0, 25],
+  popupAnchor: [10, -25],
+});
+
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
       (pos) => setUserLocation([pos.coords.latitude, pos.coords.longitude]),
@@ -118,6 +132,26 @@ function App() {
 
         {/* ROUTE — only renders when you have 2+ stops */}
         {showRoute && routeStops.length >= 2 && <RouteLayer stops={routeStops} />}
+
+        {showRoute && (
+          <Marker
+            position={[routeStops[0].lat, routeStops[0].lng]}
+            icon={startFlagIcon}
+            zIndexOffset={500}
+          >
+            <Popup>Start</Popup>
+          </Marker>
+        )}
+
+        {showRoute && (
+          <Marker
+            position={[routeStops[routeStops.length - 1].lat, routeStops[routeStops.length - 1].lng]}
+            icon={finishFlagIcon}
+            zIndexOffset={500}
+          >
+            <Popup>Finish</Popup>
+          </Marker>
+        )}
 
         {/* // Pass positions into RouteLayer:
         {routeStops.length >= 2 && <RouteLayer routePositions={routePositions} />} */}
