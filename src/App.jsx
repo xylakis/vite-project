@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import pois from "./pois";
 import icons from "./icons";
@@ -94,7 +94,7 @@ const finishFlagIcon = L.icon({
     );
 
   return (
-    <div style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" 
+    <div className={selectedPoi ? "sheet-open" : ""} style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" 
     }}
     >
 
@@ -113,7 +113,18 @@ const finishFlagIcon = L.icon({
         }}
         zoomControl={false}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+
+        {/* ZOOM BUTTONS - desktop only */}
+        {window.innerWidth >= 768 && (
+          <ZoomControl
+            position="bottomright"
+            zoomInText='<i class="ti ti-plus"></i>'
+            zoomOutText='<i class="ti ti-minus"></i>'
+          />
+        )}
 
         {/* USER MARKER */}
         <Marker position={userLocation}>

@@ -127,6 +127,46 @@ code {
   flex-direction: column;
 } 
 
+/* zoom buttons + map credit (bottom right): slide left of the side sheet when it is open */
+.leaflet-bottom.leaflet-right {
+  transition: right 0.2s ease;
+}
+.sheet-open .leaflet-bottom.leaflet-right {
+  right: calc(30.8% + 8px);
+}
+
+/* zoom buttons: same look as the recenter/settings buttons on the left */
+.leaflet-container .leaflet-control-zoom.leaflet-bar {
+  border: none;
+  box-shadow: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 16px;   /* same distance from the edge as the left buttons */
+  margin-bottom: 40px;  /* height above the bottom edge: raise or lower this */
+}
+.leaflet-container .leaflet-control-zoom.leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  color: #555;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leaflet-container .leaflet-control-zoom.leaflet-bar a:hover {
+  background: #f4f4f4;
+}
+.leaflet-container .leaflet-control-zoom.leaflet-bar a.leaflet-disabled {
+  color: #bbb;
+  background: white;
+}
+
 #BOTTOM_SHEET {        
   position: absolute;
   bottom: 0;
