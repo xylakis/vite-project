@@ -56,10 +56,22 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [ ] Remove leftovers and dev-only dependencies (Issues #8)
 
 ### Phase 1: Map tiles and offline decision
-- [ ] **Decide:** B) hosted tile provider with API key (MapTiler / Stadia / Thunderforest / Carto), or C) offline map bundled in the app (Protomaps `.pmtiles` + `protomaps-leaflet`)
-  - Recommendation: **C**, since tourists may have no mobile data. Choose B for speed or a styled/dark map.
-- [ ] Implement the chosen option and keep the OSM attribution visible
-- [ ] Optional: dark map style that follows dark mode
+- [x] **Decided 2026-11-02: offline map bundled in the app.** Uses an OpenStreetMap vector extract in Protomaps **PMTiles** format (one file, no API key, no usage limits).
+  - App direction: **"Paths of Memory of Chania"**, i.e. the whole central city, not only Halepa.
+  - **Area:** Nea Chora / Kladissos (west) → Halepa / Koulouras (east), coast → Pasakaki / Deligianni (south), plus a small margin.
+    - Bounding box: `--bbox=23.990,35.495,24.060,35.530` (west, south, east, north)
+  - Expected size: a few MB (to be confirmed after extraction).
+- [ ] **Decide map library:** keep Leaflet + `protomaps-leaflet` (small change; library is in maintenance mode) **or** switch to MapLibre GL via `react-map-gl` (recommended for the city-wide app; rewrite of the map part of `App.jsx`, plus bundled fonts/sprites)
+- [ ] Make the map file on the dev machine (Claude's workspace cannot reach build.protomaps.com):
+  - download `pmtiles.exe` from github.com/protomaps/go-pmtiles/releases
+  - `pmtiles extract https://build.protomaps.com/<YYYYMMDD>.pmtiles chania.pmtiles --bbox=23.990,35.495,24.060,35.530`
+  - check it at pmtiles.io, then put it in `public/maps/chania.pmtiles`
+- [ ] Replace the OSM `TileLayer` with the PMTiles layer; keep "© OpenStreetMap" (+ Protomaps) attribution visible
+- [ ] Limit panning/zoom to the covered area (`maxBounds`, `minZoom`)
+- [ ] Label language follows the app language (`lang: 'el'` / `'en'`)
+- [ ] Dark map style (`flavor: 'dark'`) follows dark mode
+- [ ] **Test early in Capacitor:** PMTiles needs HTTP range requests; if the in-app server doesn't support them, load the whole file into memory instead
+- [ ] Refresh the map file before each release (2-minute job)
 
 ### Phase 2: App identity
 - [ ] Final app name (currently `halepa-walk` / package `vite-project` 0.0.0)
@@ -138,7 +150,8 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 |---|---|---|
 | 2026-11-01 | Android route: Capacitor (wrap built app into a native project). Alternatives considered: PWA only, TWA wrapper | Recommended, to confirm |
 | 2026-11-01 | Zoom +/− buttons on desktop only, bottom-right; phones use pinch-zoom | Done |
-| – | Map tiles: hosted provider (B) vs offline bundle (C) | **Open** |
+| 2026-11-02 | Map: offline OSM vector map (PMTiles) bundled in the app, covering central Chania (bbox 23.990,35.495,24.060,35.530) | Decided |
+| – | Map library: Leaflet + protomaps-leaflet vs MapLibre GL | **Open** (MapLibre recommended) |
 | – | Play account type: organization vs personal | **Open** |
 | – | App name and app ID | **Open** |
 
@@ -169,3 +182,10 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - Security: `npm install` reported 20 vulnerabilities, all in dev tooling.
   - Removed unused `ngrok`, ran `npm audit fix` → 6 moderate remain (ESLint, no fix available yet).
 - Next up: decide on Phase 1 (hosted tiles vs offline map), then issue #3 (saved route).
+
+### 2026-11-02
+- Decided on an **offline map** built into the app. The app is growing into "Paths of Memory of Chania", so the map covers central Chania (Nea Chora → Halepa, coast → Pasakaki).
+  - Bounding box `23.990,35.495,24.060,35.530`.
+- Claude's workspace can't download from build.protomaps.com, so the map file has to be made on the dev machine with `pmtiles.exe` (steps in Phase 1).
+- Open question: Leaflet + protomaps-leaflet vs MapLibre GL.
+- Note: the editor again saved an old copy of CLAUDE.md over an update. **Close CLAUDE.md in the editor while Claude works.**
