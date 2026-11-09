@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, ZoomControl }
 import L from "leaflet";
 import pois from "./pois";
 import icons from "./icons";
+import { getPoiIcon } from "./poiIcons";
+import { getRouteIcon } from "./routeIcons";
 import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
@@ -48,20 +50,6 @@ function App() {
 ];
 
   const { routePositions, routeInfo, status } = useOsrmRoute(routeStops);
-
-  const startFlagIcon = L.icon({
-  iconUrl: '/icons/icons8-flag-100 (green).png',
-  iconSize: [25, 25],
-  iconAnchor: [15, 15],   // tip of the flagpole
-  popupAnchor: [0, -20],
-});
-
-const finishFlagIcon = L.icon({
-  iconUrl: '/icons/icons8-flag-100 (red).png',
-  iconSize: [25, 25],
-  iconAnchor: [0, 25],
-  popupAnchor: [10, -25],
-});
 
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
@@ -147,7 +135,7 @@ const finishFlagIcon = L.icon({
         {showRoute && (
           <Marker
             position={[routeStops[0].lat, routeStops[0].lng]}
-            icon={startFlagIcon}
+            icon={getRouteIcon("start")}
             zIndexOffset={500}
           >
             <Popup>Start</Popup>
@@ -157,7 +145,7 @@ const finishFlagIcon = L.icon({
         {showRoute && (
           <Marker
             position={[routeStops[routeStops.length - 1].lat, routeStops[routeStops.length - 1].lng]}
-            icon={finishFlagIcon}
+            icon={getRouteIcon("finish")}
             zIndexOffset={500}
           >
             <Popup>Finish</Popup>
@@ -167,24 +155,13 @@ const finishFlagIcon = L.icon({
         {/* // Pass positions into RouteLayer:
         {routeStops.length >= 2 && <RouteLayer routePositions={routePositions} />} */}
 
-        {/* SELECTION RING — rendered on top of the selected POI */}
-        {selectedPoi && (
-          <Marker
-            key={`${selectedPoi.id}-selected`}
-            position={selectedPoi.position}
-            icon={icons.selected}
-            interactive={false}
-            keyboard={false}
-            zIndexOffset={-1000}    // negative pushes it down
-          />
-        )}
-
         {/* POI MARKERS */}
         {pois.map((poi) => (
           <Marker
             key={poi.id}
             position={poi.position}
-            icon={icons[poi.icon]}
+            icon={getPoiIcon(poi.className, selectedPoi?.id === poi.id)}
+            zIndexOffset={selectedPoi?.id === poi.id ? 1000 : 0}   // selected marker on top
             eventHandlers={{ click: () => setSelectedPoi(poi) }}
           />
         ))}

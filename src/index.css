@@ -233,3 +233,67 @@ html, body, #root {
   border: none;
   text-align: left;
 }
+
+/* ── POI markers (see src/poiIcons.js) ── */
+.poi-marker {
+  background: none;
+  border: none;
+}
+.poi-marker svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
+  transition: transform 0.15s ease;
+  transform-origin: 50% 93%;
+}
+.poi-marker:hover svg {
+  transform: translateY(-2px);
+}
+.poi-marker__badge {
+  fill: #fff;
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 1;
+}
+.poi-marker__glyph {
+  stroke: #658a63; /* Cultural Memory green (logo) */
+}
+.poi-marker--selected .poi-marker__badge {
+  fill: #658a63;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+.poi-marker--selected .poi-marker__glyph {
+  stroke: #fff;
+}
+
+/* ── Route start / finish markers (see src/routeIcons.js) ── */
+.route-marker {
+  background: none;
+  border: none;
+}
+.route-marker svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+.route-marker__badge {
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+.route-marker__glyph {
+  stroke: #fff;
+}
+.route-marker__glyph .fill {
+  fill: #fff;
+  stroke: none;
+}
+.route-marker--start .route-marker__badge {
+  fill: #658a63; /* Cultural Memory green */
+}
+.route-marker--finish .route-marker__badge {
+  fill: #2f3437; /* charcoal */
+}

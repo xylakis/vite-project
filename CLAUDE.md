@@ -31,6 +31,8 @@ npm run dev          # starts https://localhost:5173 (+ Network URL and QR code 
 ```
 - The certificate is self-signed (`@vitejs/plugin-basic-ssl`, needed so phones allow location). Accept the browser warning once.
 - Stop the server with `Ctrl + C`.
+- **Testing on a phone:** use the `https://192.168.…:5173` Network address (or the QR code), and accept the certificate warning.
+  - The **office network blocks device-to-device connections**, so test from home or via a phone hotspot.
 
 ### Working agreement
 - When Claude edits files, **save or close those files in the editor first**. If the editor says "file changed on disk", load the new version.
@@ -54,6 +56,20 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [ ] Layout reacts to resize / rotation (Issues #5)
 - [ ] Settings fixes (Issues #6)
 - [ ] Remove leftovers and dev-only dependencies (Issues #8)
+- [~] **New map markers.** The old ones (pink pins, icons8 flags, Leaflet default pin) look too basic.
+  - Style: white rounded badge with a pointer (matches the map buttons) and a symbol in Cultural Memory green `#658A63`. Selected = solid green, larger.
+  - [~] **POI markers:** one symbol per `className` in `pois.js`. Code: `src/poiIcons.js` (add new categories to `POI_GLYPHS`), CSS block "POI markers" in `index.css`. Awaiting approval.
+    - `area` (Tanning Houses, Katsampas): cluster of 3 houses
+    - `consulate`: classical building with flag
+    - `school`: graduation cap
+    - `house`: house with chimney
+    - `palace`: crown
+    - `institution`: open book
+    - `church`: Orthodox church with dome and cross
+    - any other/missing className: dot (fallback)
+  - [ ] Start / finish markers of the route (now icons8 flag PNGs)
+  - [ ] "You are here" user marker (now Leaflet's default pin; also solves Issues #7)
+  - [ ] Afterwards: delete unused PNGs in `public/icons/` and unused entries in `src/icons.js`
 
 ### Phase 1: Map tiles and offline decision
 - [x] **Decided 2026-11-02: offline map bundled in the app.** Uses an OpenStreetMap vector extract in Protomaps **PMTiles** format (one file, no API key, no usage limits).
@@ -189,3 +205,16 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - Claude's workspace can't download from build.protomaps.com, so the map file has to be made on the dev machine with `pmtiles.exe` (steps in Phase 1).
 - Open question: Leaflet + protomaps-leaflet vs MapLibre GL.
 - Note: the editor again saved an old copy of CLAUDE.md over an update. **Close CLAUDE.md in the editor while Claude works.**
+
+### 2026-11-08
+- Phone couldn't open the dev server. Cause: the office Wi-Fi isolates devices; on another network it works.
+- Restored the 2026-11-02 map notes in this file, which the editor had overwritten again before the commit.
+- Still open: make `chania.pmtiles` (Phase 1 steps) and decide Leaflet + protomaps-leaflet vs MapLibre GL.
+
+### 2026-11-09
+- Added the "new map markers" action point.
+- New POI markers built (custom SVG symbols per category, `src/poiIcons.js`).
+  - All 14 POIs already had a `className`, so nothing was added to `pois.js`.
+  - The old `icon: "location_icon"` field in `pois.js` is no longer used for POIs.
+  - The separate selection-ring marker was removed; the selected POI now turns green and moves on top.
+- Next: user approval of the POI markers → start/finish markers → user marker.
