@@ -1,7 +1,6 @@
 import { useState } from "react";
 import btnStyle from "../myStyles";
 import PhotoSlider from "./PhotoSlider";
-import { welcomeDivStyle } from "../myStyles";
 
 
 // --- BOTTOM SHEET (mobile) ---
@@ -63,7 +62,7 @@ function BottomSheet({ poi, onClose, language }) {
       <p
         style={{
           fontSize: "var(--font-size-base, 15px)",
-          color: "#666",
+          color: "var(--text-secondary)",
           marginBottom: "16px",
           lineHeight: "1.5",
           overflowY: "auto",        // ← scroll when content overflows

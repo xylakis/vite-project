@@ -1,7 +1,4 @@
-import { useState } from "react";
-import btnStyle from "../myStyles";
 import PhotoSlider from "./PhotoSlider";
-import { welcomeDivStyle } from "../myStyles";
 
 
 function SideSheet({ poi, onClose, language }) {
@@ -62,7 +59,7 @@ function SideSheet({ poi, onClose, language }) {
       <p style={{
         // fontSize: "15px",
         fontSize: "var(--font-size-base, 15px)",
-        color: "#666",
+        color: "var(--text-secondary)",
         marginBottom: "16px",
         lineHeight: "1.5",
         overflowY: "auto",

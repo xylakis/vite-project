@@ -1,8 +1,6 @@
-import { useState } from "react";
 
-export default function TestSettingsScreen({ onClose, isDark, setIsDark, language, setLanguage, fontSize, setFontSize, showRoute, setShowRoute, routeInfo }) {
+export default function SettingsScreen({ onClose, isDark, setIsDark, language, setLanguage, fontSize, setFontSize, showRoute, setShowRoute, routeInfo }) {
 
-    const fontSizes = { Small: '13px', Default: '15px', Large: '18px' };
     const languages = [
         { label: '🇬🇧 English', value: 'English' },
         { label: '🇬🇷 Greek',   value: 'Greek'   },
@@ -10,16 +8,9 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
         { label: '🇫🇷 French',  value: 'French'  },
     ];
 
-    const toggleDark = () => {
-        const next = !isDark;
-        setIsDark(next);
-        document.documentElement.classList.toggle('mode-dark', next);
-    };
-
-    const changeFont = (size) => {
-        setFontSize(size);
-        document.documentElement.style.setProperty('--font-size-base', fontSizes[size]);
-    };
+    // App.jsx applies these to the page and remembers them
+    const toggleDark = () => setIsDark(!isDark);
+    const changeFont = (size) => setFontSize(size);
 
     const sectionLabel = {
         fontSize: '11px', color: 'var(--text-secondary, #888)',
@@ -163,7 +154,7 @@ export default function TestSettingsScreen({ onClose, isDark, setIsDark, languag
                 alignItems: 'center',
                 padding: '12px 0 10px',
                 borderTop: '1px solid var(--border, #333)',
-                background: 'var(--bg-panel, inherit)',   // covers scroll content underneath
+                background: 'var(--bg-surface)',   // covers scroll content underneath
             }}>
 
             <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo" 

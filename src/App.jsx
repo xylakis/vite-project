@@ -1,18 +1,17 @@
-import { useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, ZoomControl } from "react-leaflet";
-import L from "leaflet";
+import { useState, useRef, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
 import pois from "./pois";
 import { getPoiIcon } from "./poiIcons";
 import { getRouteIcon } from "./routeIcons";
 import { userIcon } from "./userIcon";
 import useUserLocation from "./useUserLocation";
 import useIsDesktop from "./useIsDesktop";
+import usePersistentState from "./usePersistentState";
 import LocationNotice from "./Components/LocationNotice";
-import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
-import TestSettingsScreen from "./Components/testSettingsScreen";
+import SettingsScreen from "./Components/SettingsScreen";
 import RecenterButton, {SettingsButton} from "./Components/myButtons";
 import { RouteLayer } from "./Components/RouteMap";
 import route from "./route.json";
@@ -27,11 +26,21 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
 
-  const [isDark, setIsDark] = useState(false);
-  const [language, setLanguage] = useState('English');
-  const [fontSize, setFontSize] = useState('Default');
+  // Settings: remembered on this device between visits
+  const [isDark, setIsDark] = usePersistentState('darkMode', false);
+  const [language, setLanguage] = usePersistentState('language', 'English');
+  const [fontSize, setFontSize] = usePersistentState('fontSize', 'Default');
 
-  const [showRoute, setShowRoute] = useState(false);
+  const [showRoute, setShowRoute] = usePersistentState('showRoute', false);
+
+  // Apply dark mode and text size to the whole page (also after reopening the app)
+  useEffect(() => {
+    document.documentElement.classList.toggle('mode-dark', isDark);
+  }, [isDark]);
+  useEffect(() => {
+    const sizes = { Small: '13px', Default: '15px', Large: '18px' };
+    document.documentElement.style.setProperty('--font-size-base', sizes[fontSize] ?? sizes.Default);
+  }, [fontSize]);
   
 
   const mapRef = useRef(null);
@@ -121,7 +130,7 @@ function App() {
       <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
       
       {showSettings && (
-        <TestSettingsScreen
+        <SettingsScreen
           onClose={() => setShowSettings(false)}
           isDark={isDark}       setIsDark={setIsDark}
           language={language}   setLanguage={setLanguage}
@@ -143,7 +152,7 @@ function App() {
             height: '80vh',        // ← fixed height instead of maxHeight
             zIndex: 1000,
             borderRadius: '12px',
-            background: 'var(--bg-panel, #F5F5F5)',
+            background: 'var(--bg-surface)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
             overflow: 'hidden',    // keep this — the inner div handles scrolling
             display: 'flex',       // ← add this

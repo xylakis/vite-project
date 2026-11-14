@@ -150,21 +150,21 @@ code {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  color: #555;
+  color: var(--btn-icon);
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .leaflet-container .leaflet-control-zoom.leaflet-bar a:hover {
-  background: #f4f4f4;
+  background: var(--btn-bg-hover);
 }
 .leaflet-container .leaflet-control-zoom.leaflet-bar a.leaflet-disabled {
-  color: #bbb;
-  background: white;
+  color: var(--btn-icon-disabled);
+  background: var(--btn-bg);
 }
 
 #BOTTOM_SHEET {        
@@ -335,10 +335,10 @@ html, body, #root {
   height: 44px;
   padding: 0;
   border-radius: 10px;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  color: #555;
+  color: var(--btn-icon);
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -346,7 +346,7 @@ html, body, #root {
   cursor: pointer;
 }
 .photo-slider__arrow:hover {
-  background: #f4f4f4;
+  background: var(--btn-bg-hover);
 }
 .photo-slider__arrow--prev { left: 10px; }
 .photo-slider__arrow--next { right: 10px; }
@@ -420,10 +420,10 @@ html, body, #root {
   gap: 10px;
   padding: 11px 12px;
   border-radius: 10px;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  color: #444;
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.4;
   box-sizing: border-box;
@@ -462,7 +462,7 @@ html, body, #root {
   border: none;
   border-radius: 50%;
   background: none;
-  color: #777;
+  color: var(--text-secondary);
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -470,5 +470,38 @@ html, body, #root {
   cursor: pointer;
 }
 .location-notice__close:hover {
-  background: #f0f0f0;
+  background: var(--btn-bg-hover);
+}
+
+/* ── Dark mode: map buttons, cards and map (class "mode-dark" on <html>, set from Settings) ── */
+:root {
+  --btn-bg: #fff;
+  --btn-bg-hover: #f4f4f4;
+  --btn-border: #ddd;
+  --btn-icon: #555;
+  --btn-icon-disabled: #bbb;
+  --text-secondary: #666;
+}
+.mode-dark {
+  --btn-bg: #262626;
+  --btn-bg-hover: #333;
+  --btn-border: #3d3d3d;
+  --btn-icon: #e2e2e2;
+  --btn-icon-disabled: #666;
+  --text-secondary: #b3b3b3;
+}
+/* Interim dark map: the OSM tiles are light only, so they are inverted.
+   Replace with the PMTiles dark style (flavor: 'dark') in Phase 1. */
+.mode-dark .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.85) saturate(0.7);
+}
+.mode-dark .leaflet-container {
+  background: #1d1f21;  /* shown while tiles load */
+}
+.mode-dark .leaflet-control-attribution {
+  background: rgba(30, 30, 30, 0.8);
+  color: #bbb;
+}
+.mode-dark .leaflet-control-attribution a {
+  color: #8cb4e8;
 }

@@ -23,7 +23,7 @@ Update it at the end of every work session. The newest diary entry goes at the b
   - `src/Components/BottomSheet.jsx`: POI panel on mobile
   - `src/Components/SideSheet.jsx`: POI panel on desktop
   - `src/Components/WelcomeScreen.jsx`: welcome screen
-  - `src/Components/testSettingsScreen.jsx`: settings currently in use
+  - `src/Components/SettingsScreen.jsx`: settings screen (was `testSettingsScreen.jsx` until 2026-11-14)
   - `src/Components/myButtons.jsx`: recenter and settings buttons
 - **Assets:** `public/photos/<poi id>.jpg`, `public/icons/`
 - **Dev machine:** Windows, `C:\Users\emmanoui\Documents\GitHub\vite-project`
@@ -59,8 +59,8 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [x] Better location handling (Issues #4, done 2026-11-14)
   - When moving to Capacitor (Phase 4), only `src/useUserLocation.js` needs to switch to `@capacitor/geolocation`; the "denied" text will then need to point to the phone's app settings instead of the browser.
 - [x] Layout reacts to resize / rotation (Issues #5, done 2026-11-14)
-- [ ] Settings fixes (Issues #6)
-- [ ] Remove leftovers and dev-only dependencies (Issues #8)
+- [x] Settings fixes (Issues #6, done 2026-11-14)
+- [x] Remove leftovers and dev-only dependencies (Issues #8, done 2026-11-14)
 - [x] **Multiple photos per POI (photo slider).** Done 2026-11-14; tested by the user on desktop and phone (commit `78177d5`).
   - Code: `src/Components/PhotoSlider.jsx`, CSS block "POI photo slider" in `index.css`; used in `BottomSheet.jsx` and `SideSheet.jsx`.
   - **To add photos to a POI:** put `<id>a.jpg`, `<id>b.jpg`… in `public/photos/` and add `photos: ["<id>", "<id>a", "<id>b"]` to that POI in `pois.js`. Without `photos`, the POI shows `<id>.jpg` only.
@@ -110,7 +110,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [ ] Replace the OSM `TileLayer` with the PMTiles layer; keep "© OpenStreetMap" (+ Protomaps) attribution visible
 - [ ] Limit panning/zoom to the covered area (`maxBounds`, `minZoom`)
 - [ ] Label language follows the app language (`lang: 'el'` / `'en'`)
-- [ ] Dark map style (`flavor: 'dark'`) follows dark mode
+- [ ] Dark map style (`flavor: 'dark'`) follows dark mode; then remove the interim tile `filter` under `.mode-dark .leaflet-tile-pane` in `index.css`
 - [ ] **Test early in Capacitor:** PMTiles needs HTTP range requests; if the in-app server doesn't support them, load the whole file into memory instead
 - [ ] Refresh the map file before each release (2-minute job)
 
@@ -172,15 +172,19 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
    - Recenter/settings buttons: fixed `top: 16px` / `top: 70px`.
    - Bottom sheet: `50dvh` / `83dvh` (share of the visible screen height); app root: `100dvh`, so nothing hides under the phone browser's toolbar.
    - Note: a phone turned sideways is usually ≥ 768 px wide, so it gets the desktop layout (side panel + zoom buttons). This was already the rule; it now also applies after rotating.
-6. **Settings.**
-   - Choices (dark mode, language, font size, route) reset on every visit; they should be saved.
-   - The font-size setting only affects the desktop `SideSheet`, not the mobile `BottomSheet`.
-   - In dark mode the map tiles and the white buttons stay light.
+6. ~~**Settings.**~~ **Fixed 2026-11-14.**
+   - Dark mode, language, font size and route on/off are remembered on the device (`src/usePersistentState.js`, localStorage keys `halepa-walk:*`). `App.jsx` applies dark mode and font size to the page, also on startup.
+   - Font size: the phone `BottomSheet` already used `--font-size-base`; checked that Small/Default/Large change it (15 → 18 px for Large).
+   - Dark mode: buttons, zoom, photo-slider arrows, location card, welcome and settings screens follow it (CSS variables `--btn-*`, `--text-secondary` in the "Dark mode" block of `index.css`).
+   - Map in dark mode: **interim** inverted OSM tiles via a CSS filter, until the PMTiles dark style (Phase 1).
+   - Still light in dark mode: the "More" button in the phone panel (`btnStyle` in `myStyles.js`) and the white POI/route marker badges (kept on purpose; they read well on the dark map).
 7. ~~**Leaflet default marker icon after build.**~~ **Fixed 2026-11-14.** The "You are here" marker is now a custom CSS marker (`src/userIcon.js`); no Leaflet image files are used anymore.
-8. **Leftovers to clean up:**
-   - `index copy.html`, `public/favicon_bak.svg`, `public/photos/5_bak*.jpg`
-   - ~~old `SettingsScreen.jsx`~~ deleted 2026-11-14 (`testSettingsScreen.jsx` is the one in use; could be renamed)
-   - unused code that ESLint reports (2026-11-14): `useMap`, `btnStyle` imports and `routePositions`, `status` in `App.jsx`; `poisBak` in `pois.js`
+8. ~~**Leftovers to clean up.**~~ **Fixed 2026-11-14.** `npm run lint` now reports 0 problems.
+   - Deleted: `index copy.html`, `public/favicon_bak.svg`, `public/photos/5_bak.jpg` + `5_bak_2.jpg`, unused Vite template files (`public/icons.svg`, `src/App.css`, `src/assets/`), the old `poisBak` copy at the top of `pois.js`, `welcomeDivStyle` in `myStyles.js`, and all unused imports.
+   - `testSettingsScreen.jsx` renamed to `SettingsScreen.jsx`.
+   - Dependencies checked: all in use; dev tools (ESLint, QR code, SSL plugin) are `devDependencies` and are not shipped.
+   - Kept on purpose: commented-out photo-credit lines in the sheets and the commented-out draft POIs in `pois.js`; the `Affinity and Image Files/` design folder (not shipped).
+   - Possible later tidy-up: `README.md` is still the Vite template text; the top of `index.css` still has Vite template variables (`--accent` etc.).
 9. **npm audit: 6 moderate warnings remain** in ESLint's dependencies (`minimatch` chain).
    - No fix exists yet. Dev tooling only; nothing ships to users. Re-run `npm audit` occasionally, and run `npm audit fix` (never `--force`) when updates appear.
 10. **Accessibility.** The settings button has no `aria-label` (recenter button got one on 2026-11-14).
@@ -281,4 +285,10 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - Issue #5 fixed: layout follows window resize and phone rotation.
   - New: `src/useIsDesktop.js`. Changed: `App.jsx`, `myButtons.jsx`, `BottomSheet.jsx`.
   - Checked in Chrome with a POI open and location blocked: portrait → landscape switches bottom panel → side panel; desktop window narrowed → bottom panel, widened → side panel; buttons stay at the top left.
-- Next up: Issue #6 (settings: remember choices, font size on phones, dark mode for map/buttons).
+- Issue #6 fixed: settings are remembered between visits; dark mode now covers buttons, cards, welcome/settings screens and the map.
+  - New: `src/usePersistentState.js`. Changed: `App.jsx`, `testSettingsScreen.jsx`, `myButtons.jsx`, `BottomSheet.jsx`, `SideSheet.jsx`, `WelcomeScreen.jsx`, `index.css`.
+  - The welcome screen used an undefined `--bg-panel` colour (always light), unreadable once dark mode is remembered; now uses `--bg-surface`.
+  - Checked in Chrome: set dark + Large + Greek + route, reloaded → all kept.
+- Issue #8 fixed: leftover files, Vite template files, old POI copy and unused imports removed; `testSettingsScreen.jsx` → `SettingsScreen.jsx`. Lint: 0 problems. Smoke-tested in Chrome (phone + desktop): no errors, no missing files.
+- **Phase 0 is complete except one approval:** the route start/finish markers (`src/routeIcons.js`) were built but never formally approved.
+- Next up: Phase 1, decide Leaflet + protomaps-leaflet vs MapLibre GL, and make `chania.pmtiles` on the dev machine.

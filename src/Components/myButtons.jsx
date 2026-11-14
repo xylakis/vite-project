@@ -1,6 +1,3 @@
-import { useState } from "react";
-import btnStyle from "../myStyles";
-import { welcomeDivStyle } from "../myStyles";
 
 // --- SETTINGS COMPONENT ---
 export function SettingsButton({ onClick }) {
@@ -15,8 +12,8 @@ export function SettingsButton({ onClick }) {
         width: "44px",
         height: "44px",
         borderRadius: "10px",
-        background: "white",
-        border: "1px solid #ddd",
+        background: "var(--btn-bg)",
+        border: "1px solid var(--btn-border)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -30,7 +27,7 @@ export function SettingsButton({ onClick }) {
         height="20"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#555"
+        stroke="var(--btn-icon)"
         strokeWidth="2"
       >
         <circle cx="12" cy="12" r="3" />
@@ -58,8 +55,8 @@ function RecenterButton({ mapRef, userLocation, onNoLocation }) {
         width: "44px",
         height: "44px",
         borderRadius: "10px",
-        background: "white",
-        border: "1px solid #ddd",
+        background: "var(--btn-bg)",
+        border: "1px solid var(--btn-border)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -73,7 +70,7 @@ function RecenterButton({ mapRef, userLocation, onNoLocation }) {
         height="20"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#555"
+        stroke="var(--btn-icon)"
         strokeWidth="2"
       >
         <circle cx="12" cy="12" r="3" />

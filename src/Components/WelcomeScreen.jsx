@@ -1,6 +1,3 @@
-import { useState } from "react";
-import btnStyle from "../myStyles";
-import { welcomeDivStyle } from "../myStyles";
 
 function WelcomeScreen({ onClose,showEng, setShowEng }) {
 
@@ -139,7 +136,7 @@ function WelcomeScreen({ onClose,showEng, setShowEng }) {
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         padding: '12px 0 10px',
         borderTop: '1px solid var(--border, #333)',
-        background: 'var(--bg-panel, inherit)',
+        background: 'var(--bg-surface)',
       }}>
         <img src="/icons/CM_logo.svg" alt="Cultural Memory Logo"
           style={{ width: '64px', marginBottom: '6px' }} />
