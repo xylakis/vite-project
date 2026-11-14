@@ -103,8 +103,9 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - App direction: **"Paths of Memory of Chania"**, i.e. the whole central city, not only Halepa.
   - **Area:** Nea Chora / Kladissos (west) → Halepa / Koulouras (east), coast → Pasakaki / Deligianni (south), plus a small margin.
     - Bounding box: `--bbox=23.990,35.495,24.060,35.530` (west, south, east, north)
-  - Expected size: a few MB (to be confirmed after extraction).
+  - Size: 1.5 MB (confirmed 2026-11-14).
 - [x] **Map library: MapLibre GL** via `react-map-gl/maplibre` (decided and built 2026-11-14). Leaflet and react-leaflet removed.
+  - **Tested by the user on phone and desktop and committed (`c5e9335`, "maplibre switch").**
 - [x] Map file made 2026-11-14: `public/maps/chania.pmtiles`, **1.5 MB**, zoom 0–15, OSM data of 2026-11-14 (Protomaps build `20261114`, basemap tiles v4).
 - [x] Label fonts and map symbols bundled (no internet needed):
   - `public/maps/fonts/Noto Sans {Regular,Medium,Italic}/`: only the Latin, Greek, Cyrillic and punctuation ranges (2.7 MB). Source: protomaps.github.io/basemaps-assets (Noto fonts, SIL Open Font License).
@@ -308,4 +309,6 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - Installed `maplibre-gl` 6.18, `react-map-gl` 8.1, `pmtiles` 4.5, `@protomaps/basemaps` 5.7; removed `leaflet`, `react-leaflet`. `npm audit`: 0 vulnerabilities.
   - New: `src/mapStyle.js`, `src/Components/MapPin.jsx`. Rewritten: map part of `App.jsx`, `RouteMap.jsx` (route is now a GeoJSON line layer), marker files (no Leaflet), zoom buttons, Leaflet CSS → MapLibre CSS.
   - Checked in Chrome: light map (desktop) and dark map with Greek labels and route (phone); markers, selection, panels, zoom buttons, drag, recenter all work; **no requests to the internet**, no console errors.
-- Next up: user tests the new map on desktop and phone; then Phase 2 (app identity) or the Capacitor range-request test.
+- User tested the MapLibre map on phone and desktop: works. Committed as `c5e9335` ("maplibre switch").
+- **Phase 1 is done** except two later items: the Capacitor range-request test (Phase 4) and refreshing the map file before each release.
+- Next up: Phase 2 (app identity: name, app ID, icon, splash, favicon/title).
