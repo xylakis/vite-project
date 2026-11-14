@@ -297,3 +297,81 @@ html, body, #root {
 .route-marker--finish .route-marker__badge {
   fill: #2f3437; /* charcoal */
 }
+
+/* ── POI photo slider (see src/Components/PhotoSlider.jsx) ── */
+.photo-slider {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.photo-slider__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.photo-slider__track::-webkit-scrollbar {
+  display: none;
+}
+.photo-slider__track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scroll-snap-align: start;
+  display: block;
+  user-select: none;
+}
+/* arrows: same look as the recenter/settings/zoom buttons */
+.photo-slider__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  color: #555;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.photo-slider__arrow:hover {
+  background: #f4f4f4;
+}
+.photo-slider__arrow--prev { left: 10px; }
+.photo-slider__arrow--next { right: 10px; }
+/* dots: which photo is shown */
+.photo-slider__dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.35);
+}
+.photo-slider__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+.photo-slider__dot.is-active {
+  background: white;
+}

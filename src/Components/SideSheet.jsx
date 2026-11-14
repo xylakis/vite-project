@@ -1,5 +1,6 @@
 import { useState } from "react";
 import btnStyle from "../myStyles";
+import PhotoSlider from "./PhotoSlider";
 import { welcomeDivStyle } from "../myStyles";
 
 
@@ -41,20 +42,18 @@ function SideSheet({ poi, onClose, language }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 2,  // stay above the photo slider
       }}
     >
     <i className="ti ti-x" style={{ fontSize: '14px' }} />
     </button>
-      <img src={`/photos/${poi.id}.jpg`} alt={poi.name} 
+      <PhotoSlider key={poi.id} poi={poi} alt={names[language] ?? poi.name_eng}
         style={{
           width: "calc(100% + 32px)",
           aspectRatio: "2/1",
-          height: "auto",
-          objectFit: "cover",
           borderRadius: "5px 5px 0px 0px",
           marginLeft: "-16px",
           marginBottom: "10px",
-          flexShrink: 0,
         }} />
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "5px" }}>
         {names[language] ?? poi.name_eng}

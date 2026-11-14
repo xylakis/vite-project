@@ -56,6 +56,22 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [ ] Layout reacts to resize / rotation (Issues #5)
 - [ ] Settings fixes (Issues #6)
 - [ ] Remove leftovers and dev-only dependencies (Issues #8)
+- [~] **Multiple photos per POI (photo slider).** Built 2026-11-14, awaiting the user's test on desktop and phone.
+  - Code: `src/Components/PhotoSlider.jsx`, CSS block "POI photo slider" in `index.css`; used in `BottomSheet.jsx` and `SideSheet.jsx`.
+  - **To add photos to a POI:** put `<id>a.jpg`, `<id>b.jpg`… in `public/photos/` and add `photos: ["<id>", "<id>a", "<id>b"]` to that POI in `pois.js`. Without `photos`, the POI shows `<id>.jpg` only.
+  - Arrows are hidden on the first/last photo; arrow labels are English only for now.
+  - Naming: main photo `public/photos/<id>.jpg`, extra photos `<id>a.jpg`, `<id>b.jpg`, … (letters in order).
+    - Now: POI 1 (Tanning Houses) has `1a`, `1b`; POI 3 (French School) has `3a`, `3b`.
+  - When a POI has more than one photo, the photo frame becomes a slider:
+    - swipe left/right on touch screens
+    - left/right arrow buttons in the frame, styled like the map buttons (white, rounded, 44×44, Tabler `ti-chevron-left` / `ti-chevron-right`)
+    - small dots under the photo showing which photo is shown (e.g. 2 of 3)
+    - keyboard ← / → on desktop; arrows get `aria-label`s
+  - POIs with one photo look exactly as now (no arrows, no dots).
+  - Same component in both `BottomSheet.jsx` and `SideSheet.jsx` (both currently use `/photos/${poi.id}.jpg`).
+  - Adding photos later should need no code change: list them in `pois.js` (e.g. `photos: ["1", "1a", "1b"]`) rather than probing the server for files, which is not reliable offline/in Capacitor.
+  - Photo credit: `image_source` is one field per POI; decide whether each photo needs its own credit.
+  - Compress the new photos too (Issues #11).
 - [~] **New map markers.** The old ones (pink pins, icons8 flags, Leaflet default pin) look too basic.
   - Style: white rounded badge with a pointer (matches the map buttons) and a symbol in Cultural Memory green `#658A63`. Selected = solid green, larger.
   - [~] **POI markers:** one symbol per `className` in `pois.js`. Code: `src/poiIcons.js` (add new categories to `POI_GLYPHS`), CSS block "POI markers" in `index.css`. Awaiting approval.
@@ -67,9 +83,11 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
     - `institution`: open book
     - `church`: Orthodox church with dome and cross
     - any other/missing className: dot (fallback)
-  - [ ] Start / finish markers of the route (now icons8 flag PNGs)
+  - [~] Start / finish markers of the route: custom flag badges in `src/routeIcons.js` (the old icons8 flag PNGs are deleted)
   - [ ] "You are here" user marker (now Leaflet's default pin; also solves Issues #7)
-  - [ ] Afterwards: delete unused PNGs in `public/icons/` and unused entries in `src/icons.js`
+  - [x] Afterwards: delete unused icons in `public/icons/` and `src/icons.js` (done 2026-11-14)
+    - Deleted all 15 old icons; only `CM_logo.svg` remains (welcome and settings screens).
+    - Deleted `src/icons.js`, the old `SettingsScreen.jsx`, their commented-out blocks in `App.jsx`, and the unused `icon: "location_icon"` field in `pois.js`.
 
 ### Phase 1: Map tiles and offline decision
 - [x] **Decided 2026-11-02: offline map bundled in the app.** Uses an OpenStreetMap vector extract in Protomaps **PMTiles** format (one file, no API key, no usage limits).
@@ -153,12 +171,17 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
    - With bundlers it can show as a broken image after `npm run build`. Check once we build.
 8. **Leftovers to clean up:**
    - `index copy.html`, `public/favicon_bak.svg`, `public/photos/5_bak*.jpg`
-   - old `SettingsScreen.jsx` vs `testSettingsScreen.jsx`
-   - unused imports (`btnStyle`, `Polyline`, `useMap`…)
+   - ~~old `SettingsScreen.jsx`~~ deleted 2026-11-14 (`testSettingsScreen.jsx` is the one in use; could be renamed)
+   - unused code that ESLint reports (2026-11-14): `useMap`, `btnStyle` imports and `routePositions`, `status` in `App.jsx`; `poisBak` in `pois.js`
 9. **npm audit: 6 moderate warnings remain** in ESLint's dependencies (`minimatch` chain).
    - No fix exists yet. Dev tooling only; nothing ships to users. Re-run `npm audit` occasionally, and run `npm audit fix` (never `--force`) when updates appear.
 10. **Accessibility.** Recenter and settings buttons have no `aria-label`.
-11. **Photo sizes.** Some are up to ~400 KB; compress before bundling into the app.
+11. **Photo sizes.** Checked 2026-11-14: about 2.7 MB in total (without the `_bak` copies). Acceptable, but some files are larger than they need to be.
+   - Largest: `6.jpg` 395 KB; `14.jpg` 295 KB (saved at ~100% quality); `3a.jpg` (1818 px wide) and `3b.jpg` ~210 KB; `10.jpg` 210 KB.
+   - ~~`1b.jpg` and `4.jpg` were WebP files with a `.jpg` name.~~ **Converted to real JPEG (quality 90) on 2026-11-14.** Now 198 KB and 95 KB; the compression step below will shrink them.
+   - [x] Max 1600 px on the long side (done 2026-11-14; each file kept its original JPEG quality).
+   - [x] Re-saved at JPEG quality 80 (done 2026-11-14) where it saved ≥10%. Photos already at ~q80 or lower were left as they were. Total now **~1.8 MB**.
+   - New photos: max 1600 px long side, JPEG quality 80.
 
 ## Decisions
 
@@ -218,3 +241,20 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - The old `icon: "location_icon"` field in `pois.js` is no longer used for POIs.
   - The separate selection-ring marker was removed; the selected POI now turns green and moves on top.
 - Next: user approval of the POI markers → start/finish markers → user marker.
+
+### 2026-11-14
+- Added the "multiple photos per POI (photo slider)" task to Phase 0.
+  - Extra photos already in `public/photos/`: `1a`, `1b` (Tanning Houses), `3a`, `3b` (French School).
+- Checked all photos (Issues #11): ~2.7 MB in total; `6.jpg` and `14.jpg` are the largest.
+- Converted `1b.jpg` and `4.jpg` from WebP to real JPEG (they had a `.jpg` name only). Every file in `public/photos/` is now a real JPEG.
+- Downscaled photos wider/taller than 1600 px to 1600 px on the long side: `3`, `3a`, `5`, `12`, `13`, `14` (`_bak` copies left alone).
+- Test: re-saved `6.jpg` at JPEG quality 80 (395 KB → 267 KB, same pixel size). User approved the look.
+- Re-saved the other large photos at quality 80: `2`, `3`, `3b`, `4`, `5`, `7`, `8`, `10`, `12`, `13`, `14`, `1b`. Photos total 2.6 MB → 1.8 MB (`_bak` copies excluded). `14.jpg` went from 329 KB to 74 KB.
+- Deleted all unused icons from `public/icons/` (15 files; only `CM_logo.svg` remains).
+  - Also deleted the code that only pointed to them: `src/icons.js`, `src/Components/SettingsScreen.jsx`, commented-out blocks in `App.jsx`, and the `icon` field in `pois.js`.
+  - `npm run build` passes.
+- Built the photo slider for POIs with several photos (`src/Components/PhotoSlider.jsx`).
+  - POI 1 and POI 3 now have `photos` lists in `pois.js`.
+  - Swipe on touch screens, arrow buttons styled like the map buttons, dots under the photo, ← / → keys on desktop.
+  - The close (×) button now has `zIndex: 2` so it stays above the photo.
+  - Next: user tests it on desktop and phone.

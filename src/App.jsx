@@ -2,14 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import pois from "./pois";
-import icons from "./icons";
 import { getPoiIcon } from "./poiIcons";
 import { getRouteIcon } from "./routeIcons";
 import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
-import SettingsScreen from "./Components/SettingsScreen";
 import TestSettingsScreen from "./Components/testSettingsScreen";
 import RecenterButton, {SettingsButton} from "./Components/myButtons";
 import {useOsrmRoute, RouteLayer} from "./Components/RouteMap";
@@ -119,16 +117,6 @@ function App() {
           <Popup>You are here</Popup>
         </Marker>
 
-        {/* POI MARKERS */}
-        {/* {pois.map((poi) => (
-          <Marker
-            key={poi.id}
-            position={poi.position}
-            icon={selectedPoi?.id === poi.id ? icons.location_icon_active : icons[poi.icon]}
-            eventHandlers={{ click: () => setSelectedPoi(poi) }}
-          />
-        ))} */}
-
         {/* ROUTE — only renders when you have 2+ stops */}
         {showRoute && routeStops.length >= 2 && <RouteLayer stops={routeStops} />}
 
@@ -173,12 +161,6 @@ function App() {
       
       <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
       
-      {/* {showSettings && (
-        <SettingsScreen
-          onClose={() => setShowSettings(false)}
-        />
-      )} */}
-
       {showSettings && (
         <TestSettingsScreen
           onClose={() => setShowSettings(false)}
