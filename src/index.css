@@ -375,3 +375,100 @@ html, body, #root {
 .photo-slider__dot.is-active {
   background: white;
 }
+
+/* ── User marker: "you are here" (see src/userIcon.js) ── */
+.user-marker {
+  background: none;
+  border: none;
+}
+.user-marker__dot,
+.user-marker__halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.user-marker__dot {
+  background: #2f7de1;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.user-marker__halo {
+  background: rgba(47, 125, 225, 0.35);
+  animation: user-marker-pulse 2s ease-out infinite;
+}
+@keyframes user-marker-pulse {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .user-marker__halo {
+    animation: none;
+    transform: scale(2);
+    opacity: 0.5;
+  }
+}
+
+/* ── Location notice: finding / blocked / not found (see src/Components/LocationNotice.jsx) ── */
+.location-notice {
+  position: absolute;
+  top: 16px;
+  left: 72px;                      /* right of the recenter/settings buttons */
+  width: min(420px, calc(100% - 88px));
+  z-index: 999;                    /* below the welcome screen and settings */
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  color: #444;
+  font-size: 14px;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+.location-notice--locating {
+  width: auto;                     /* short message: just as wide as its text */
+  align-items: center;
+}
+.location-notice__icon {
+  font-size: 20px;
+  color: #658a63;                  /* Cultural Memory green */
+  flex-shrink: 0;
+}
+.location-notice--denied .location-notice__icon,
+.location-notice--unavailable .location-notice__icon {
+  color: #b5562f;
+}
+.location-notice--locating .location-notice__icon {
+  animation: location-notice-pulse 1.4s ease-in-out infinite;
+}
+@keyframes location-notice-pulse {
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .location-notice--locating .location-notice__icon { animation: none; }
+}
+.location-notice__text {
+  flex: 1;
+}
+.location-notice__close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: -4px -4px -4px 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: #777;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.location-notice__close:hover {
+  background: #f0f0f0;
+}

@@ -42,14 +42,15 @@ export function SettingsButton({ onClick }) {
 
 
 // --- RECENTER COMPONENT ---
-function RecenterButton({ mapRef,userLocation }) {
-  // const map = useMap();
+function RecenterButton({ mapRef, userLocation, onNoLocation }) {
   const handleRecenter = () => {
-    mapRef.current?.setView(userLocation, 16);
+    if (userLocation) mapRef.current?.setView(userLocation, 16);
+    else onNoLocation?.(); // position unknown: show the location notice again
   };
   return (
     <button id = "RECENTER_BUTTON"
       onClick={handleRecenter}
+      aria-label="Show my location"
       style={{
         position: "absolute",
         bottom: window.innerHeight-60, // always above the sheet

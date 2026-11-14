@@ -15,7 +15,11 @@ Update it at the end of every work session. The newest diary entry goes at the b
   - `src/App.jsx`: map, markers, route, location, layout
   - `src/pois.js`: points of interest (texts in EN / GR / DE / FR)
   - `src/icons.js`: marker icons
-  - `src/Components/RouteMap.jsx`: walking route (OSRM)
+  - `src/Components/RouteMap.jsx`: draws the walking route
+  - `src/routeStops.js`: route points (start, waypoints, finish); `src/route.json`: saved route line made from them
+  - `scripts/update-route.mjs` (`npm run update-route`): remakes `src/route.json` after the route points change
+  - `src/useUserLocation.js`: follows the user's position (status: locating / ok / denied / unavailable)
+  - `src/Components/LocationNotice.jsx`: card at the top of the map explaining missing location (EN / GR / DE / FR)
   - `src/Components/BottomSheet.jsx`: POI panel on mobile
   - `src/Components/SideSheet.jsx`: POI panel on desktop
   - `src/Components/WelcomeScreen.jsx`: welcome screen
@@ -51,12 +55,13 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [x] Tabler icons bundled locally (`@tabler/icons-webfont`) instead of CDN `@latest`
 - [x] Security clean-up: removed unused `ngrok`, ran `npm audit fix` (20 → 6 moderate warnings, all in ESLint dev tooling)
 - [x] Desktop zoom buttons, bottom-right, styled like the left buttons
-- [ ] Use the saved route instead of the live OSRM request (Issues #3)
-- [ ] Better location handling (Issues #4)
+- [x] Use the saved route instead of the live OSRM request (Issues #3, done 2026-11-14)
+- [x] Better location handling (Issues #4, done 2026-11-14)
+  - When moving to Capacitor (Phase 4), only `src/useUserLocation.js` needs to switch to `@capacitor/geolocation`; the "denied" text will then need to point to the phone's app settings instead of the browser.
 - [ ] Layout reacts to resize / rotation (Issues #5)
 - [ ] Settings fixes (Issues #6)
 - [ ] Remove leftovers and dev-only dependencies (Issues #8)
-- [~] **Multiple photos per POI (photo slider).** Built 2026-11-14, awaiting the user's test on desktop and phone.
+- [x] **Multiple photos per POI (photo slider).** Done 2026-11-14; tested by the user on desktop and phone (commit `78177d5`).
   - Code: `src/Components/PhotoSlider.jsx`, CSS block "POI photo slider" in `index.css`; used in `BottomSheet.jsx` and `SideSheet.jsx`.
   - **To add photos to a POI:** put `<id>a.jpg`, `<id>b.jpg`… in `public/photos/` and add `photos: ["<id>", "<id>a", "<id>b"]` to that POI in `pois.js`. Without `photos`, the POI shows `<id>.jpg` only.
   - Arrows are hidden on the first/last photo; arrow labels are English only for now.
@@ -74,7 +79,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - Compress the new photos too (Issues #11).
 - [~] **New map markers.** The old ones (pink pins, icons8 flags, Leaflet default pin) look too basic.
   - Style: white rounded badge with a pointer (matches the map buttons) and a symbol in Cultural Memory green `#658A63`. Selected = solid green, larger.
-  - [~] **POI markers:** one symbol per `className` in `pois.js`. Code: `src/poiIcons.js` (add new categories to `POI_GLYPHS`), CSS block "POI markers" in `index.css`. Awaiting approval.
+  - [x] **POI markers:** one symbol per `className` in `pois.js`. Code: `src/poiIcons.js` (add new categories to `POI_GLYPHS`), CSS block "POI markers" in `index.css`. **Approved by the user 2026-11-14.**
     - `area` (Tanning Houses, Katsampas): cluster of 3 houses
     - `consulate`: classical building with flag
     - `school`: graduation cap
@@ -84,7 +89,9 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
     - `church`: Orthodox church with dome and cross
     - any other/missing className: dot (fallback)
   - [~] Start / finish markers of the route: custom flag badges in `src/routeIcons.js` (the old icons8 flag PNGs are deleted)
-  - [ ] "You are here" user marker (now Leaflet's default pin; also solves Issues #7)
+  - [x] "You are here" user marker: blue dot with white ring and pulsing halo (built and **approved by the user 2026-11-14**)
+    - Code: `src/userIcon.js`, CSS block "User marker" in `index.css`. Blue on purpose, so it isn't confused with green POI/start markers.
+    - The pulse stops for users who turn on "reduce motion" on their device.
   - [x] Afterwards: delete unused icons in `public/icons/` and `src/icons.js` (done 2026-11-14)
     - Deleted all 15 old icons; only `CM_logo.svg` remains (welcome and settings screens).
     - Deleted `src/icons.js`, the old `SettingsScreen.jsx`, their commented-out blocks in `App.jsx`, and the unused `icon: "location_icon"` field in `pois.js`.
@@ -152,14 +159,14 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 
 1. ~~Tile URL~~ **Fixed 2026-11-01.** Remaining: OSM's tile policy forbids offline use and may block in-app traffic, so the Android app still needs Phase 1.
 2. ~~Tabler icons from CDN~~ **Fixed 2026-11-01.** `@tabler/icons-webfont` ^3.50.0 is installed and imported in `main.jsx`. On a new machine, run `npm install` first.
-3. **Route fetched live from `routing.openstreetmap.de` every time the app opens.**
-   - The route never changes, so save the geometry as JSON in the project. That also makes it work offline.
-   - It is currently fetched **twice**: `useOsrmRoute` is called in `App.jsx` (for route info) and again inside `RouteLayer`.
-   - Some route stop labels are duplicated or missing ("Waypoint 9" twice, no "Waypoint 2"/"8").
-4. **Location handling.**
-   - The whole app waits on "Getting your location..." before showing anything.
-   - On error it silently places the user at a made-up location (`[35.5138, 24.018]`).
-   - Better: show the map immediately, and show a "location unavailable / permission denied" state.
+3. ~~**Route fetched live from `routing.openstreetmap.de` every time the app opens.**~~ **Fixed 2026-11-14.**
+   - The route line is saved in `src/route.json` (1.7 km, ~23 min, 102 points, 2.4 KB). The app makes no routing requests and the route works offline.
+   - Route points moved from `App.jsx` to `src/routeStops.js`, with labels fixed (Start, Waypoint 1–14, Finish).
+   - **To change the route:** edit `src/routeStops.js`, run `npm run update-route` (needs internet), check the map, commit both files.
+4. ~~**Location handling.**~~ **Fixed 2026-11-14.**
+   - The map shows immediately; no more "Getting your location..." screen and no made-up fallback position.
+   - A card at the top of the map shows "Finding your location…", "Location access is blocked…" or "Your location can't be found right now…", in the app language. It can be closed; the recenter button brings it back while the position is unknown.
+   - The blue dot appears only when the real position is known. A later GPS drop-out keeps the last known position.
 5. **Layout not responsive at runtime.** `window.innerWidth` / `window.innerHeight` are read once while rendering.
    - Affected: mobile vs desktop panels, zoom buttons, recenter/settings button positions.
    - Rotating a phone or resizing the window does not update the layout. Use a resize listener / CSS media queries.
@@ -167,15 +174,14 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
    - Choices (dark mode, language, font size, route) reset on every visit; they should be saved.
    - The font-size setting only affects the desktop `SideSheet`, not the mobile `BottomSheet`.
    - In dark mode the map tiles and the white buttons stay light.
-7. **Leaflet default marker icon after build.** The "You are here" pin uses Leaflet's default icon.
-   - With bundlers it can show as a broken image after `npm run build`. Check once we build.
+7. ~~**Leaflet default marker icon after build.**~~ **Fixed 2026-11-14.** The "You are here" marker is now a custom CSS marker (`src/userIcon.js`); no Leaflet image files are used anymore.
 8. **Leftovers to clean up:**
    - `index copy.html`, `public/favicon_bak.svg`, `public/photos/5_bak*.jpg`
    - ~~old `SettingsScreen.jsx`~~ deleted 2026-11-14 (`testSettingsScreen.jsx` is the one in use; could be renamed)
    - unused code that ESLint reports (2026-11-14): `useMap`, `btnStyle` imports and `routePositions`, `status` in `App.jsx`; `poisBak` in `pois.js`
 9. **npm audit: 6 moderate warnings remain** in ESLint's dependencies (`minimatch` chain).
    - No fix exists yet. Dev tooling only; nothing ships to users. Re-run `npm audit` occasionally, and run `npm audit fix` (never `--force`) when updates appear.
-10. **Accessibility.** Recenter and settings buttons have no `aria-label`.
+10. **Accessibility.** The settings button has no `aria-label` (recenter button got one on 2026-11-14).
 11. **Photo sizes.** Checked 2026-11-14: about 2.7 MB in total (without the `_bak` copies). Acceptable, but some files are larger than they need to be.
    - Largest: `6.jpg` 395 KB; `14.jpg` 295 KB (saved at ~100% quality); `3a.jpg` (1818 px wide) and `3b.jpg` ~210 KB; `10.jpg` 210 KB.
    - ~~`1b.jpg` and `4.jpg` were WebP files with a `.jpg` name.~~ **Converted to real JPEG (quality 90) on 2026-11-14.** Now 198 KB and 95 KB; the compression step below will shrink them.
@@ -257,4 +263,17 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - POI 1 and POI 3 now have `photos` lists in `pois.js`.
   - Swipe on touch screens, arrow buttons styled like the map buttons, dots under the photo, ← / → keys on desktop.
   - The close (×) button now has `zIndex: 2` so it stays above the photo.
-  - Next: user tests it on desktop and phone.
+  - User tested it: works on desktop and phone. Committed by the user (`78177d5`, "multiple photos at pois").
+  - (A first report that POI 1 had no arrows could not be reproduced; most likely a stale page or the Katsampas marker, which has the same icon.)
+- User approved the POI markers.
+- Built the new "You are here" marker (`src/userIcon.js`): blue dot, white ring, pulsing halo. Replaces Leaflet's default pin, which also closes Issues #7. Checked in Chrome; `npm run build` passes.
+- User approved the user marker.
+- Issue #3 fixed: the walking route is now saved in the project instead of being fetched from `routing.openstreetmap.de` (twice) on every visit.
+  - New: `src/routeStops.js` (route points), `src/route.json` (saved line), `scripts/update-route.mjs` + `npm run update-route`.
+  - `RouteMap.jsx` now only draws the saved line; `useOsrmRoute` removed.
+  - Checked in Chrome: route, start/finish markers and "(1.7 km)" in settings show; no routing requests.
+- Issue #4 fixed: map shows at once; location problems are explained in a small card instead of a waiting screen or a made-up position.
+  - New: `src/useUserLocation.js`, `src/Components/LocationNotice.jsx`, CSS block "Location notice" in `index.css`.
+  - Recenter button: does nothing harmful without a position (it re-shows the notice) and has `aria-label="Show my location"`.
+  - Checked in Chrome (phone size): location allowed (dot, no card), blocked (card), not found (card); close and re-show work.
+- Next up: Issue #5 (layout reacts to resize / rotation).

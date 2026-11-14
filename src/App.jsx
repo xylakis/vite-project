@@ -1,19 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap, ZoomControl } from "react-leaflet";
 import L from "leaflet";
 import pois from "./pois";
 import { getPoiIcon } from "./poiIcons";
 import { getRouteIcon } from "./routeIcons";
+import { userIcon } from "./userIcon";
+import useUserLocation from "./useUserLocation";
+import LocationNotice from "./Components/LocationNotice";
 import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import TestSettingsScreen from "./Components/testSettingsScreen";
 import RecenterButton, {SettingsButton} from "./Components/myButtons";
-import {useOsrmRoute, RouteLayer} from "./Components/RouteMap";
+import { RouteLayer } from "./Components/RouteMap";
+import route from "./route.json";
+import routeStops from "./routeStops";
 
 function App() {
-  const [userLocation, setUserLocation] = useState(null);
+  const { position: userLocation, status: locationStatus } = useUserLocation();
+  const [noticeKey, setNoticeKey] = useState(0); // bump to show the location notice again
   const [selectedPoi, setSelectedPoi] = useState(null);
   const [showEng, setShowEng] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -27,57 +33,6 @@ function App() {
   
 
   const mapRef = useRef(null);
-  
-  const routeStops = [
-  { lat: 35.51833824463729, lng: 24.038573001776236, label: "Start" },
-  { lat: 35.51905649097498, lng: 24.038519357623727, label: "Waypoint 1" },
-  {lat: 35.51990558269885, lng:24.038551098620385},
-  { lat: 35.51823, lng: 24.03572, label: "Waypoint 3" }, 
-  { lat: 35.51826183507514, lng: 24.037639593084897, label: "Waypoint 4" },
-  { lat: 35.51786, lng: 24.03875, label: "Waypoint 5" },
-  { lat: 35.51761632277899, lng: 24.038720364663188, label: "Waypoint 6" },
-  {lat: 35.5169038293579, lng: 24.040015207732438, label: "Waypoint 7"},
-  {lat: 35.51631566487464, lng: 24.038841207387353, label: "Waypoint 9"},
-  {lat: 35.51595288410136, lng: 24.038748273570516, label: "Waypoint 9"},
-  {lat: 35.51554070140421, lng: 24.03886396664548, label: "Waypoint 10"},
-  {lat: 35.515810858833554, lng: 24.038702754967662, label: "Waypoint 11"},
-  {lat: 35.51574373598675, lng:24.03864634745825},
-  {lat: 35.51516081950533, lng:24.03821451185436},
-  {lat: 35.51528962913435, lng:24.03777731177107},
-  {lat: 35.517492460061014, lng:24.037694163312853},
-];
-
-  const { routePositions, routeInfo, status } = useOsrmRoute(routeStops);
-
-  useEffect(() => {
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => setUserLocation([pos.coords.latitude, pos.coords.longitude]),
-      (err) => {
-        console.error("Could not get location", err);
-        setUserLocation([35.5138, 24.018]);
-      },
-      { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 },
-    );
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
-
-
-
-  if (!userLocation)
-    return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "16px",
-          color: "#666",
-        }}
-      >
-        Getting your location...
-      </div>
-    );
 
   return (
     <div className={selectedPoi ? "sheet-open" : ""} style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" 
@@ -113,12 +68,14 @@ function App() {
         )}
 
         {/* USER MARKER */}
-        <Marker position={userLocation}>
-          <Popup>You are here</Popup>
-        </Marker>
+        {userLocation && (
+          <Marker position={userLocation} icon={userIcon} zIndexOffset={800}>
+            <Popup>You are here</Popup>
+          </Marker>
+        )}
 
         {/* ROUTE — only renders when you have 2+ stops */}
-        {showRoute && routeStops.length >= 2 && <RouteLayer stops={routeStops} />}
+        {showRoute && <RouteLayer />}
 
         {showRoute && (
           <Marker
@@ -140,9 +97,6 @@ function App() {
           </Marker>
         )}
 
-        {/* // Pass positions into RouteLayer:
-        {routeStops.length >= 2 && <RouteLayer routePositions={routePositions} />} */}
-
         {/* POI MARKERS */}
         {pois.map((poi) => (
           <Marker
@@ -157,7 +111,10 @@ function App() {
         
       </MapContainer>
 
-      <RecenterButton mapRef={mapRef} userLocation={userLocation} />
+      <RecenterButton mapRef={mapRef} userLocation={userLocation} onNoLocation={() => setNoticeKey((k) => k + 1)} />
+
+      {/* LOCATION STATUS (finding / blocked / not found) */}
+      <LocationNotice key={`${locationStatus}-${noticeKey}`} status={locationStatus} language={language} />
       
       <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
       
@@ -168,7 +125,7 @@ function App() {
           language={language}   setLanguage={setLanguage}
           fontSize={fontSize}   setFontSize={setFontSize}
           showRoute={showRoute} setShowRoute={setShowRoute}
-          routeInfo = {routeInfo}
+          routeInfo={{ distance: route.distance_km, duration: route.duration_min }}
         />
       )}
 

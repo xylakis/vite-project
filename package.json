@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-route": "node scripts/update-route.mjs"
   },
   "dependencies": {
     "@tabler/icons-webfont": "^3.50.0",
