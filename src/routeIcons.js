@@ -1,5 +1,3 @@
-import L from "leaflet";
-
 // ─────────────────────────────────────────────────────────────
 // ROUTE START / FINISH MARKERS
 // Round badges that sit centred on the first and last point of
@@ -33,16 +31,17 @@ function markerSvg(glyph) {
 
 const cache = {};
 
-/** Leaflet icon for the route's "start" or "finish" point. */
+/** Map marker for the route's "start" or "finish" point (for <MapPin>). */
 export function getRouteIcon(kind) {
   if (!cache[kind]) {
-    cache[kind] = L.divIcon({
+    cache[kind] = {
       className: `route-marker route-marker--${kind}`,
       html: markerSvg(GLYPHS[kind]),
-      iconSize: [SIZE, SIZE],
-      iconAnchor: [SIZE / 2, SIZE / 2], // centred on the route point
-      popupAnchor: [0, -SIZE / 2],
-    });
+      width: SIZE,
+      height: SIZE,
+      anchor: "center", // centred on the route point
+      offsetY: 0,
+    };
   }
   return cache[kind];
 }

@@ -41,7 +41,10 @@ export function SettingsButton({ onClick }) {
 // --- RECENTER COMPONENT ---
 function RecenterButton({ mapRef, userLocation, onNoLocation }) {
   const handleRecenter = () => {
-    if (userLocation) mapRef.current?.setView(userLocation, 16);
+    if (userLocation) {
+      const map = mapRef.current;
+      map?.flyTo({ center: [userLocation[1], userLocation[0]], zoom: Math.max(map.getZoom(), 15.5) });
+    }
     else onNoLocation?.(); // position unknown: show the location notice again
   };
   return (
@@ -81,3 +84,18 @@ function RecenterButton({ mapRef, userLocation, onNoLocation }) {
 }
 
 export default RecenterButton;
+
+
+// --- ZOOM BUTTONS (desktop) --- styled in index.css ("Zoom buttons")
+export function ZoomButtons({ mapRef }) {
+  return (
+    <div className="zoom-buttons">
+      <button type="button" aria-label="Zoom in" onClick={() => mapRef.current?.zoomIn()}>
+        <i className="ti ti-plus" aria-hidden="true" />
+      </button>
+      <button type="button" aria-label="Zoom out" onClick={() => mapRef.current?.zoomOut()}>
+        <i className="ti ti-minus" aria-hidden="true" />
+      </button>
+    </div>
+  );
+}

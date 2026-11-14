@@ -127,28 +127,23 @@ code {
   flex-direction: column;
 } 
 
-/* zoom buttons + map credit (bottom right): slide left of the side sheet when it is open */
-.leaflet-bottom.leaflet-right {
-  transition: right 0.2s ease;
-}
-.sheet-open .leaflet-bottom.leaflet-right {
-  right: calc(30.8% + 8px);
-}
-
-/* zoom buttons: same look as the recenter/settings buttons on the left */
-.leaflet-container .leaflet-control-zoom.leaflet-bar {
-  border: none;
-  box-shadow: none;
-  background: none;
+/* ── Zoom buttons (desktop, bottom right; see ZoomButtons in myButtons.jsx) ──
+   Same look as the recenter/settings buttons. They and the map credit slide
+   left of the side sheet when a POI is open. */
+.zoom-buttons {
+  position: absolute;
+  right: 16px;          /* same distance from the edge as the left buttons */
+  bottom: 40px;         /* height above the bottom edge: raise or lower this */
+  z-index: 900;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-right: 16px;   /* same distance from the edge as the left buttons */
-  margin-bottom: 40px;  /* height above the bottom edge: raise or lower this */
+  transition: right 0.2s ease;
 }
-.leaflet-container .leaflet-control-zoom.leaflet-bar a {
+.zoom-buttons button {
   width: 44px;
   height: 44px;
+  padding: 0;
   border-radius: 10px;
   background: var(--btn-bg);
   border: 1px solid var(--btn-border);
@@ -158,13 +153,19 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
-.leaflet-container .leaflet-control-zoom.leaflet-bar a:hover {
+.zoom-buttons button:hover {
   background: var(--btn-bg-hover);
 }
-.leaflet-container .leaflet-control-zoom.leaflet-bar a.leaflet-disabled {
-  color: var(--btn-icon-disabled);
-  background: var(--btn-bg);
+.sheet-open .zoom-buttons {
+  right: calc(30.8% + 44px);  /* just left of the side sheet (its width includes 32px padding) */
+}
+.maplibregl-ctrl-bottom-right {
+  transition: right 0.2s ease;
+}
+.sheet-open .maplibregl-ctrl-bottom-right {
+  right: calc(30.8% + 32px);
 }
 
 #BOTTOM_SHEET {        
@@ -490,18 +491,24 @@ html, body, #root {
   --btn-icon-disabled: #666;
   --text-secondary: #b3b3b3;
 }
-/* Interim dark map: the OSM tiles are light only, so they are inverted.
-   Replace with the PMTiles dark style (flavor: 'dark') in Phase 1. */
-.mode-dark .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.85) saturate(0.7);
-}
-.mode-dark .leaflet-container {
-  background: #1d1f21;  /* shown while tiles load */
-}
-.mode-dark .leaflet-control-attribution {
+/* Map credit (bottom right) in dark mode; the map itself uses the Protomaps dark style */
+.mode-dark .maplibregl-ctrl-attrib,
+.mode-dark .maplibregl-ctrl-attrib.maplibregl-compact {
   background: rgba(30, 30, 30, 0.8);
   color: #bbb;
 }
-.mode-dark .leaflet-control-attribution a {
+.mode-dark .maplibregl-ctrl-attrib a {
   color: #8cb4e8;
 }
+.mode-dark .maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+}
+/* Small popups ("You are here", Start, Finish) */
+.map-popup .maplibregl-popup-content {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+

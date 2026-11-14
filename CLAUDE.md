@@ -10,11 +10,13 @@ Update it at the end of every work session. The newest diary entry goes at the b
 
 ## Project at a glance
 
-- **Stack:** React 19 + Vite 8 + Leaflet 1.9 / react-leaflet 5
+- **Stack:** React 19 + Vite 8 + MapLibre GL 6 / react-map-gl 8, offline map from a PMTiles file (Protomaps basemap style). Leaflet was removed on 2026-11-14.
 - **Main files:**
   - `src/App.jsx`: map, markers, route, location, layout
   - `src/pois.js`: points of interest (texts in EN / GR / DE / FR)
-  - `src/icons.js`: marker icons
+  - `src/mapStyle.js`: offline map setup (map file, fonts, light/dark, label language, bounds)
+  - `src/Components/MapPin.jsx`: puts our SVG markers on the MapLibre map
+  - `src/poiIcons.js`, `src/routeIcons.js`, `src/userIcon.js`: marker designs
   - `src/Components/RouteMap.jsx`: draws the walking route
   - `src/routeStops.js`: route points (start, waypoints, finish); `src/route.json`: saved route line made from them
   - `scripts/update-route.mjs` (`npm run update-route`): remakes `src/route.json` after the route points change
@@ -102,17 +104,25 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - **Area:** Nea Chora / Kladissos (west) → Halepa / Koulouras (east), coast → Pasakaki / Deligianni (south), plus a small margin.
     - Bounding box: `--bbox=23.990,35.495,24.060,35.530` (west, south, east, north)
   - Expected size: a few MB (to be confirmed after extraction).
-- [ ] **Decide map library:** keep Leaflet + `protomaps-leaflet` (small change; library is in maintenance mode) **or** switch to MapLibre GL via `react-map-gl` (recommended for the city-wide app; rewrite of the map part of `App.jsx`, plus bundled fonts/sprites)
-- [ ] Make the map file on the dev machine (Claude's workspace cannot reach build.protomaps.com):
-  - download `pmtiles.exe` from github.com/protomaps/go-pmtiles/releases
-  - `pmtiles extract https://build.protomaps.com/<YYYYMMDD>.pmtiles chania.pmtiles --bbox=23.990,35.495,24.060,35.530`
-  - check it at pmtiles.io, then put it in `public/maps/chania.pmtiles`
-- [ ] Replace the OSM `TileLayer` with the PMTiles layer; keep "© OpenStreetMap" (+ Protomaps) attribution visible
-- [ ] Limit panning/zoom to the covered area (`maxBounds`, `minZoom`)
-- [ ] Label language follows the app language (`lang: 'el'` / `'en'`)
-- [ ] Dark map style (`flavor: 'dark'`) follows dark mode; then remove the interim tile `filter` under `.mode-dark .leaflet-tile-pane` in `index.css`
+- [x] **Map library: MapLibre GL** via `react-map-gl/maplibre` (decided and built 2026-11-14). Leaflet and react-leaflet removed.
+- [x] Map file made 2026-11-14: `public/maps/chania.pmtiles`, **1.5 MB**, zoom 0–15, OSM data of 2026-11-14 (Protomaps build `20261114`, basemap tiles v4).
+- [x] Label fonts and map symbols bundled (no internet needed):
+  - `public/maps/fonts/Noto Sans {Regular,Medium,Italic}/`: only the Latin, Greek, Cyrillic and punctuation ranges (2.7 MB). Source: protomaps.github.io/basemaps-assets (Noto fonts, SIL Open Font License).
+  - `public/maps/sprites/light*` and `dark*` (112 KB). Source: same site, `sprites/v4`.
+  - If a label ever shows empty boxes, a character range is missing: download that `<range>.pbf` from `https://protomaps.github.io/basemaps-assets/fonts/<font>/<range>.pbf`.
+- [x] Map drawn from the PMTiles file; "MapLibre | Protomaps © OpenStreetMap" credit always visible (`compact: false`).
+- [x] Panning/zoom limited to the covered area (`MAP_BOUNDS`, zoom 12.5–19 in `src/mapStyle.js`). No rotating or tilting.
+- [x] Label language follows the app language (en / el / de / fr; streets without a translated name show the Greek name).
+- [x] Dark map style follows dark mode (the interim inverted-tiles CSS filter is removed).
+- [x] Zoom buttons rebuilt as our own buttons (`ZoomButtons` in `myButtons.jsx`, CSS "Zoom buttons"); recenter uses `flyTo`.
+- [x] MapLibre 6's worker file is passed explicitly (`setWorkerUrl` + `?url` import in `mapStyle.js`); without it Vite breaks the map ("Worker failed to load").
 - [ ] **Test early in Capacitor:** PMTiles needs HTTP range requests; if the in-app server doesn't support them, load the whole file into memory instead
-- [ ] Refresh the map file before each release (2-minute job)
+- [ ] **Refresh the map file before each release** (2-minute job, Claude can do it):
+  - get `pmtiles.exe` (github.com/protomaps/go-pmtiles/releases, Windows x86_64 zip; v1.31.2 used)
+  - pick a recent build date (list: maps.protomaps.com/builds), then:
+    `pmtiles extract https://build.protomaps.com/<YYYYMMDD>.pmtiles public/maps/chania.pmtiles --bbox=23.990,35.495,24.060,35.530`
+  - check the app; keep `@protomaps/basemaps` up to date so the style matches the tiles
+- Note: the build is ~9 MB (MapLibre ~1 MB + worker 0.5 MB, map files 4.2 MB, photos ~1.8 MB, icon font). Fine for an app; Vite's "chunk larger than 500 kB" warning is expected.
 
 ### Phase 2: App identity
 - [ ] Final app name (currently `halepa-walk` / package `vite-project` 0.0.0)
@@ -157,7 +167,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 
 ## Open issues (as of 2026-11-01)
 
-1. ~~Tile URL~~ **Fixed 2026-11-01.** Remaining: OSM's tile policy forbids offline use and may block in-app traffic, so the Android app still needs Phase 1.
+1. ~~Tile URL~~ **Fixed 2026-11-01.** ~~Remaining: OSM's tile policy forbids offline use~~ **Solved 2026-11-14:** the app no longer uses OSM's tile servers; the map comes from the bundled PMTiles file.
 2. ~~Tabler icons from CDN~~ **Fixed 2026-11-01.** `@tabler/icons-webfont` ^3.50.0 is installed and imported in `main.jsx`. On a new machine, run `npm install` first.
 3. ~~**Route fetched live from `routing.openstreetmap.de` every time the app opens.**~~ **Fixed 2026-11-14.**
    - The route line is saved in `src/route.json` (1.7 km, ~23 min, 102 points, 2.4 KB). The app makes no routing requests and the route works offline.
@@ -202,7 +212,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 | 2026-11-01 | Android route: Capacitor (wrap built app into a native project). Alternatives considered: PWA only, TWA wrapper | Recommended, to confirm |
 | 2026-11-01 | Zoom +/− buttons on desktop only, bottom-right; phones use pinch-zoom | Done |
 | 2026-11-02 | Map: offline OSM vector map (PMTiles) bundled in the app, covering central Chania (bbox 23.990,35.495,24.060,35.530) | Decided |
-| – | Map library: Leaflet + protomaps-leaflet vs MapLibre GL | **Open** (MapLibre recommended) |
+| 2026-11-14 | Map library: MapLibre GL (react-map-gl), replacing Leaflet | Done |
 | – | Play account type: organization vs personal | **Open** |
 | – | App name and app ID | **Open** |
 
@@ -292,4 +302,10 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - Issue #8 fixed: leftover files, Vite template files, old POI copy and unused imports removed; `testSettingsScreen.jsx` → `SettingsScreen.jsx`. Lint: 0 problems. Smoke-tested in Chrome (phone + desktop): no errors, no missing files.
 - Fix: pressing the settings button now closes an open POI panel first (it used to overlap the settings screen). Checked in Chrome on phone and desktop size.
 - **Phase 0 is complete except one approval:** the route start/finish markers (`src/routeIcons.js`) were built but never formally approved.
-- Next up: Phase 1, decide Leaflet + protomaps-leaflet vs MapLibre GL, and make `chania.pmtiles` on the dev machine.
+- Phase 1 started: user chose **MapLibre GL** (now rather than later).
+  - Claude's workspace can now reach build.protomaps.com, so Claude made the map file: `public/maps/chania.pmtiles` (1.5 MB) with the official `pmtiles` tool v1.31.2.
+  - Bundled label fonts (Latin + Greek, 2.7 MB) and map symbols (light + dark) in `public/maps/`.
+  - Installed `maplibre-gl` 6.18, `react-map-gl` 8.1, `pmtiles` 4.5, `@protomaps/basemaps` 5.7; removed `leaflet`, `react-leaflet`. `npm audit`: 0 vulnerabilities.
+  - New: `src/mapStyle.js`, `src/Components/MapPin.jsx`. Rewritten: map part of `App.jsx`, `RouteMap.jsx` (route is now a GeoJSON line layer), marker files (no Leaflet), zoom buttons, Leaflet CSS → MapLibre CSS.
+  - Checked in Chrome: light map (desktop) and dark map with Greek labels and route (phone); markers, selection, panels, zoom buttons, drag, recenter all work; **no requests to the internet**, no console errors.
+- Next up: user tests the new map on desktop and phone; then Phase 2 (app identity) or the Capacitor range-request test.

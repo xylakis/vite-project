@@ -1,5 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
+import { useState, useRef, useEffect, useMemo } from "react";
+import MapView, { Popup } from "react-map-gl/maplibre";
+import { buildMapStyle, MAP_BOUNDS, MIN_ZOOM, MAX_ZOOM } from "./mapStyle";
+import MapPin from "./Components/MapPin";
 import pois from "./pois";
 import { getPoiIcon } from "./poiIcons";
 import { getRouteIcon } from "./routeIcons";
@@ -12,7 +14,7 @@ import BottomSheet from "./Components/BottomSheet";
 import SideSheet from "./Components/SideSheet";
 import WelcomeScreen from "./Components/WelcomeScreen";
 import SettingsScreen from "./Components/SettingsScreen";
-import RecenterButton, {SettingsButton} from "./Components/myButtons";
+import RecenterButton, { SettingsButton, ZoomButtons } from "./Components/myButtons";
 import { RouteLayer } from "./Components/RouteMap";
 import route from "./route.json";
 import routeStops from "./routeStops";
@@ -44,6 +46,12 @@ function App() {
   
 
   const mapRef = useRef(null);
+  const [popup, setPopup] = useState(null); // { longitude, latitude, text } for "You are here" / Start / Finish
+
+  // Offline map style: rebuilt only when dark mode or language changes
+  const mapStyle = useMemo(() => buildMapStyle({ dark: isDark, language }), [isDark, language]);
+  const start = routeStops[0];
+  const finish = routeStops[routeStops.length - 1];
 
   return (
     <div className={selectedPoi ? "sheet-open" : ""} style={{ height: "100dvh", width: "100vw", position: "relative", overflow: "hidden" 
@@ -52,75 +60,61 @@ function App() {
 
  
 
-      {/* MAP */}
-      <MapContainer
-
-        ref = {mapRef}
-        // center={userLocation}
-        center={[35.517918, 24.038808]}
-        zoom={16}
-        style={{ height: "100%", width: "100%", 
-          paddingTop: "52px", // ← add padding to prevent overlap with recenter button
-          paddingBottom: selectedPoi ? "260px" : "0px", // ← add padding when bottom sheet is open
-        }}
-        zoomControl={false}
+      {/* MAP (MapLibre, offline: see src/mapStyle.js) */}
+      <MapView
+        ref={mapRef}
+        initialViewState={{ longitude: 24.038808, latitude: 35.517918, zoom: 15 }}
+        minZoom={MIN_ZOOM}
+        maxZoom={MAX_ZOOM}
+        maxBounds={MAP_BOUNDS}
+        mapStyle={mapStyle}
+        style={{ width: "100%", height: "100%" }}
+        dragRotate={false}
+        touchPitch={false}
+        pitchWithRotate={false}
+        onClick={() => setPopup(null)}
+        attributionControl={{ compact: false }} // keep "© OpenStreetMap" visible (OSM requirement)
       >
-        <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-
-        {/* ZOOM BUTTONS - desktop only */}
-        {isDesktop && (
-          <ZoomControl
-            position="bottomright"
-            zoomInText='<i class="ti ti-plus"></i>'
-            zoomOutText='<i class="ti ti-minus"></i>'
-          />
-        )}
-
-        {/* USER MARKER */}
-        {userLocation && (
-          <Marker position={userLocation} icon={userIcon} zIndexOffset={800}>
-            <Popup>You are here</Popup>
-          </Marker>
-        )}
-
-        {/* ROUTE — only renders when you have 2+ stops */}
+        {/* ROUTE line, start and finish */}
         {showRoute && <RouteLayer />}
-
         {showRoute && (
-          <Marker
-            position={[routeStops[0].lat, routeStops[0].lng]}
-            icon={getRouteIcon("start")}
-            zIndexOffset={500}
-          >
-            <Popup>Start</Popup>
-          </Marker>
+          <MapPin icon={getRouteIcon("start")} longitude={start.lng} latitude={start.lat} zIndex={2} label="Start"
+            onClick={() => setPopup({ longitude: start.lng, latitude: start.lat, text: "Start" })} />
+        )}
+        {showRoute && (
+          <MapPin icon={getRouteIcon("finish")} longitude={finish.lng} latitude={finish.lat} zIndex={2} label="Finish"
+            onClick={() => setPopup({ longitude: finish.lng, latitude: finish.lat, text: "Finish" })} />
         )}
 
-        {showRoute && (
-          <Marker
-            position={[routeStops[routeStops.length - 1].lat, routeStops[routeStops.length - 1].lng]}
-            icon={getRouteIcon("finish")}
-            zIndexOffset={500}
-          >
-            <Popup>Finish</Popup>
-          </Marker>
-        )}
-
-        {/* POI MARKERS */}
+        {/* POI MARKERS (selected one on top) */}
         {pois.map((poi) => (
-          <Marker
+          <MapPin
             key={poi.id}
-            position={poi.position}
             icon={getPoiIcon(poi.className, selectedPoi?.id === poi.id)}
-            zIndexOffset={selectedPoi?.id === poi.id ? 1000 : 0}   // selected marker on top
-            eventHandlers={{ click: () => setSelectedPoi(poi) }}
+            longitude={poi.position[1]}
+            latitude={poi.position[0]}
+            zIndex={selectedPoi?.id === poi.id ? 4 : 1}
+            label={poi.name_eng}
+            onClick={() => { setPopup(null); setShowSettings(false); setSelectedPoi(poi); }}
           />
         ))}
 
-        
-      </MapContainer>
+        {/* USER MARKER */}
+        {userLocation && (
+          <MapPin icon={userIcon} longitude={userLocation[1]} latitude={userLocation[0]} zIndex={3} label="You are here"
+            onClick={() => setPopup({ longitude: userLocation[1], latitude: userLocation[0], text: "You are here" })} />
+        )}
+
+        {popup && (
+          <Popup longitude={popup.longitude} latitude={popup.latitude} offset={16} closeButton={false}
+            onClose={() => setPopup(null)} className="map-popup">
+            {popup.text}
+          </Popup>
+        )}
+      </MapView>
+
+      {/* ZOOM BUTTONS - desktop only (phones use pinch-zoom) */}
+      {isDesktop && <ZoomButtons mapRef={mapRef} />}
 
       <RecenterButton mapRef={mapRef} userLocation={userLocation} onNoLocation={() => setNoticeKey((k) => k + 1)} />
 

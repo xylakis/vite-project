@@ -1,5 +1,3 @@
-import L from "leaflet";
-
 // ─────────────────────────────────────────────────────────────
 // POI MARKER ICONS
 // One symbol per POI category (the `className` field in pois.js).
@@ -84,19 +82,25 @@ const SIZE = { normal: 34, selected: 42 };
 
 const cache = {};
 
-/** Leaflet icon for a POI category; `selected` gives the highlighted version. */
+/**
+ * Map marker for a POI category; `selected` gives the highlighted version.
+ * Returns { className, html, width, height, offsetY } for <MapPin> (src/Components/MapPin.jsx).
+ */
 export function getPoiIcon(className, selected = false) {
   const key = POI_GLYPHS[className] ? className : "default";
   const cacheKey = `${key}-${selected}`;
   if (!cache[cacheKey]) {
-    const w = selected ? SIZE.selected : SIZE.normal;
-    const h = Math.round((w * 48) / 40);
-    cache[cacheKey] = L.divIcon({
+    const width = selected ? SIZE.selected : SIZE.normal;
+    const height = Math.round((width * 48) / 40);
+    cache[cacheKey] = {
       className: `poi-marker poi-marker--${key}${selected ? " poi-marker--selected" : ""}`,
       html: markerSvg(POI_GLYPHS[key]),
-      iconSize: [w, h],
-      iconAnchor: [w / 2, Math.round((h * 44.6) / 48)], // the pointer's tip sits on the location
-    });
+      width,
+      height,
+      anchor: "bottom",
+      // the pointer's tip is a little above the bottom of the 40×48 shape: move it down onto the location
+      offsetY: Math.round((height * (48 - 44.6)) / 48),
+    };
   }
   return cache[cacheKey];
 }
