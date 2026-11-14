@@ -26,7 +26,7 @@ function BottomSheet({ poi, onClose, language }) {
   };
   
   return (
-    <div id = "BOTTOM_SHEET" style={{height: expanded ? window.innerHeight/1.2 : window.innerHeight/2}}>
+    <div id = "BOTTOM_SHEET" style={{ height: expanded ? "83dvh" : "50dvh" /* share of the visible screen height; follows rotation */ }}>
             <button
       onClick={onClose}
       aria-label="Close"

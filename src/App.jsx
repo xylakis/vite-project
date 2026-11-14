@@ -6,6 +6,7 @@ import { getPoiIcon } from "./poiIcons";
 import { getRouteIcon } from "./routeIcons";
 import { userIcon } from "./userIcon";
 import useUserLocation from "./useUserLocation";
+import useIsDesktop from "./useIsDesktop";
 import LocationNotice from "./Components/LocationNotice";
 import btnStyle from "./myStyles";
 import BottomSheet from "./Components/BottomSheet";
@@ -19,6 +20,7 @@ import routeStops from "./routeStops";
 
 function App() {
   const { position: userLocation, status: locationStatus } = useUserLocation();
+  const isDesktop = useIsDesktop(); // follows window resize / phone rotation
   const [noticeKey, setNoticeKey] = useState(0); // bump to show the location notice again
   const [selectedPoi, setSelectedPoi] = useState(null);
   const [showEng, setShowEng] = useState(true);
@@ -35,7 +37,7 @@ function App() {
   const mapRef = useRef(null);
 
   return (
-    <div className={selectedPoi ? "sheet-open" : ""} style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" 
+    <div className={selectedPoi ? "sheet-open" : ""} style={{ height: "100dvh", width: "100vw", position: "relative", overflow: "hidden" 
     }}
     >
 
@@ -59,7 +61,7 @@ function App() {
         />
 
         {/* ZOOM BUTTONS - desktop only */}
-        {window.innerWidth >= 768 && (
+        {isDesktop && (
           <ZoomControl
             position="bottomright"
             zoomInText='<i class="ti ti-plus"></i>'
@@ -153,11 +155,11 @@ function App() {
       )}
 
       {/* BOTTOM SHEET - mobile only*/}
-      {window.innerWidth < 768 && (
+      {!isDesktop && (
       <BottomSheet language={language} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />)}
 
       {/* SIDE SHEET - desktop only */}
-      {window.innerWidth >= 768 && (
+      {isDesktop && (
       <SideSheet language={language} poi={selectedPoi} onClose={() => setSelectedPoi(null)} />
       )}
 

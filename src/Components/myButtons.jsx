@@ -10,7 +10,7 @@ export function SettingsButton({ onClick }) {
       onClick={onClick}
       style={{
         position: "absolute",
-        bottom: window.innerHeight - 60 - 44 - 10, // recenter bottom minus button height minus gap
+        top: "70px", // below the recenter button (16 + 44 + 10)
         left: "16px", // same as RecenterButton
         width: "44px",
         height: "44px",
@@ -53,7 +53,7 @@ function RecenterButton({ mapRef, userLocation, onNoLocation }) {
       aria-label="Show my location"
       style={{
         position: "absolute",
-        bottom: window.innerHeight-60, // always above the sheet
+        top: "16px",
         left: "16px",
         width: "44px",
         height: "44px",

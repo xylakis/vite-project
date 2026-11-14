@@ -58,7 +58,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
 - [x] Use the saved route instead of the live OSRM request (Issues #3, done 2026-11-14)
 - [x] Better location handling (Issues #4, done 2026-11-14)
   - When moving to Capacitor (Phase 4), only `src/useUserLocation.js` needs to switch to `@capacitor/geolocation`; the "denied" text will then need to point to the phone's app settings instead of the browser.
-- [ ] Layout reacts to resize / rotation (Issues #5)
+- [x] Layout reacts to resize / rotation (Issues #5, done 2026-11-14)
 - [ ] Settings fixes (Issues #6)
 - [ ] Remove leftovers and dev-only dependencies (Issues #8)
 - [x] **Multiple photos per POI (photo slider).** Done 2026-11-14; tested by the user on desktop and phone (commit `78177d5`).
@@ -167,9 +167,11 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
    - The map shows immediately; no more "Getting your location..." screen and no made-up fallback position.
    - A card at the top of the map shows "Finding your location…", "Location access is blocked…" or "Your location can't be found right now…", in the app language. It can be closed; the recenter button brings it back while the position is unknown.
    - The blue dot appears only when the real position is known. A later GPS drop-out keeps the last known position.
-5. **Layout not responsive at runtime.** `window.innerWidth` / `window.innerHeight` are read once while rendering.
-   - Affected: mobile vs desktop panels, zoom buttons, recenter/settings button positions.
-   - Rotating a phone or resizing the window does not update the layout. Use a resize listener / CSS media queries.
+5. ~~**Layout not responsive at runtime.**~~ **Fixed 2026-11-14.** No code reads `window.innerWidth` / `innerHeight` anymore.
+   - Phone vs desktop layout (≥ 768 px wide): `src/useIsDesktop.js`, which updates on resize/rotation.
+   - Recenter/settings buttons: fixed `top: 16px` / `top: 70px`.
+   - Bottom sheet: `50dvh` / `83dvh` (share of the visible screen height); app root: `100dvh`, so nothing hides under the phone browser's toolbar.
+   - Note: a phone turned sideways is usually ≥ 768 px wide, so it gets the desktop layout (side panel + zoom buttons). This was already the rule; it now also applies after rotating.
 6. **Settings.**
    - Choices (dark mode, language, font size, route) reset on every visit; they should be saved.
    - The font-size setting only affects the desktop `SideSheet`, not the mobile `BottomSheet`.
@@ -276,4 +278,7 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - New: `src/useUserLocation.js`, `src/Components/LocationNotice.jsx`, CSS block "Location notice" in `index.css`.
   - Recenter button: does nothing harmful without a position (it re-shows the notice) and has `aria-label="Show my location"`.
   - Checked in Chrome (phone size): location allowed (dot, no card), blocked (card), not found (card); close and re-show work.
-- Next up: Issue #5 (layout reacts to resize / rotation).
+- Issue #5 fixed: layout follows window resize and phone rotation.
+  - New: `src/useIsDesktop.js`. Changed: `App.jsx`, `myButtons.jsx`, `BottomSheet.jsx`.
+  - Checked in Chrome with a POI open and location blocked: portrait → landscape switches bottom panel → side panel; desktop window narrowed → bottom panel, widened → side panel; buttons stay at the top left.
+- Next up: Issue #6 (settings: remember choices, font size on phones, dark mode for map/buttons).
