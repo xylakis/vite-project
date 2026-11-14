@@ -290,5 +290,6 @@ Status: `[x]` done · `[~]` in progress / partly · `[ ]` to do
   - The welcome screen used an undefined `--bg-panel` colour (always light), unreadable once dark mode is remembered; now uses `--bg-surface`.
   - Checked in Chrome: set dark + Large + Greek + route, reloaded → all kept.
 - Issue #8 fixed: leftover files, Vite template files, old POI copy and unused imports removed; `testSettingsScreen.jsx` → `SettingsScreen.jsx`. Lint: 0 problems. Smoke-tested in Chrome (phone + desktop): no errors, no missing files.
+- Fix: pressing the settings button now closes an open POI panel first (it used to overlap the settings screen). Checked in Chrome on phone and desktop size.
 - **Phase 0 is complete except one approval:** the route start/finish markers (`src/routeIcons.js`) were built but never formally approved.
 - Next up: Phase 1, decide Leaflet + protomaps-leaflet vs MapLibre GL, and make `chania.pmtiles` on the dev machine.

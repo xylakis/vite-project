@@ -127,7 +127,10 @@ function App() {
       {/* LOCATION STATUS (finding / blocked / not found) */}
       <LocationNotice key={`${locationStatus}-${noticeKey}`} status={locationStatus} language={language} />
       
-      <SettingsButton onClick={() => setShowSettings(prev => !prev)} />
+      <SettingsButton onClick={() => {
+        setSelectedPoi(null);          // close any open POI panel first
+        setShowSettings(prev => !prev);
+      }} />
       
       {showSettings && (
         <SettingsScreen
